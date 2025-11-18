@@ -46,14 +46,13 @@ const SUBJECTS_BY_EXAM = {
   ],
   fuvest: [
     { id: 'mat', name: 'Matemática', icon: '📊', color: 'bg-blue-500' },
-    { id: 'fis', name: 'Física', icon: '⚛️', color: 'bg-yellow-500' },
+    { id: 'fis', name: 'Física', icon: '⚡', color: 'bg-yellow-500' },
     { id: 'qui', name: 'Química', icon: '🧪', color: 'bg-green-500' },
     { id: 'bio', name: 'Biologia', icon: '🧬', color: 'bg-emerald-500' },
-    { id: 'por', name: 'Português / Literatura', icon: '📚', color: 'bg-red-500' },
-    { id: 'ing', name: 'Inglês', icon: '🇬🇧', color: 'bg-indigo-500' },
-    { id: 'his', name: 'História', icon: '📜', color: 'bg-amber-500' },
-    { id: 'geo', name: 'Geografia', icon: '🌍', color: 'bg-cyan-500' },
-    { id: 'fil', name: 'Filosofia e Sociologia', icon: '💡', color: 'bg-purple-500' }
+    { id: 'por', name: 'Português / Literatura', icon: '📝', color: 'bg-red-500' },
+    { id: 'ing', name: 'Inglês', icon: '🇺🇸', color: 'bg-indigo-500' },
+    { id: 'his', name: 'História', icon: '📚', color: 'bg-amber-500' },
+    { id: 'geo', name: 'Geografia', icon: '🌍', color: 'bg-cyan-500' }
   ],
   puc: [
     { id: 'mat', name: 'Matemática', icon: '📊', color: 'bg-blue-500' },
@@ -67,623 +66,157 @@ const SUBJECTS_BY_EXAM = {
   ]
 };
 
-// Assuntos por matéria - ATUALIZADOS PARA FUVEST/USP
-const TOPICS_BY_SUBJECT: Record<string, Record<ExamId, string[]>> = {
-  mat: {
-    enem: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Funções',
-      'Geometria plana',
-      'Geometria espacial',
-      'Trigonometria',
-      'Probabilidade e estatística',
-      'Análise combinatória',
-      'Progressões (PA e PG)',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  fis: {
-    enem: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Leis de Newton e dinâmica',
-      'Trabalho, energia e potência',
-      'Cinemática',
-      'Eletricidade',
-      'Termologia',
-      'Óptica',
-      'Ondulatória',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  qui: {
-    enem: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Estequiometria',
-      'Estrutura atômica',
-      'Química orgânica',
-      'Termoquímica',
-      'Soluções',
-      'Equilíbrio químico',
-      'Eletroquímica',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  bio: {
-    enem: [
-      'Ecologia',
-      'Citologia',
-      'Genética',
-      'Fisiologia',
-      'Evolução',
-      'Botânica',
-      'Zoologia',
-      'Biomas do Brasil',
-      'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
-      'Histologia básica (tecidos – leitura de figura)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Ecologia',
-      'Citologia',
-      'Genética',
-      'Fisiologia',
-      'Evolução',
-      'Botânica',
-      'Zoologia',
-      'Biomas do Brasil',
-      'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
-      'Histologia básica (tecidos – leitura de figura)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Genética',
-      'Ecologia',
-      'Citologia',
-      'Fisiologia humana',
-      'Evolução',
-      'Biotecnologia',
-      'Botânica',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Ecologia',
-      'Citologia',
-      'Genética',
-      'Fisiologia',
-      'Evolução',
-      'Botânica',
-      'Zoologia',
-      'Biomas do Brasil',
-      'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
-      'Histologia básica (tecidos – leitura de figura)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  por: {
-    enem: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Figuras de linguagem',
-      'Gramática contextual',
-      'Gêneros textuais',
-      'Obras obrigatórias da FUVEST',
-      'Modernismo e movimentos literários',
-      'Análise de estilo',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  ing: {
-    enem: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Vocabulário contextual',
-      'Gramática aplicada',
-      'Phrasal verbs',
-      'Expressões idiomáticas',
-      'Ideia principal e inferência',
-      'Falsos cognatos',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  esp: {
-    enem: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  his: {
-    enem: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Brasil Colônia',
-      'Brasil Império',
-      'Era Vargas',
-      'Ditadura Militar',
-      'Guerras Mundiais',
-      'Revolução Industrial',
-      'Iluminismo',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  geo: {
-    enem: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Geopolítica mundial',
-      'Urbanização',
-      'Questões ambientais',
-      'Agricultura',
-      'Climatologia',
-      'Recursos naturais',
-      'Globalização',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  fil: {
-    enem: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Ética e moral',
-      'Política e poder',
-      'Filosofia moderna',
-      'Sociologia clássica',
-      'Cidadania e Estado',
-      'Cultura e ideologia',
-      'Alienação e trabalho',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  soc: {
-    enem: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ]
-  }
+// Assuntos por matéria (dados reais dos vestibulares) - ATUALIZADOS COM NOVOS TÓPICOS
+const TOPICS_BY_SUBJECT = {
+  mat: [
+    'Aritmética e porcentagem',
+    'Estatística (média, gráficos e tabelas)',
+    'Geometria plana e espacial',
+    'Funções',
+    'Probabilidade',
+    'PA/PG',
+    'Trigonometria',
+    'Matemática financeira (juros simples/compostos, desconto)',
+    'Análise combinatória (arranjos, combinações, permutações)',
+    'Proporcionalidade & escalas (regra de três, unidades, mapas)',
+    'Geometria analítica básica (distância, área no plano cartesiano)'
+  ],
+  fis: [
+    'Eletrodinâmica',
+    'Cinemática',
+    'Dinâmica',
+    'Termologia',
+    'Óptica',
+    'Hidrostática',
+    'Ondulatória',
+    'Trabalho, energia e potência',
+    'Impulso e quantidade de movimento (colisões)',
+    'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
+    'Eletromagnetismo/Indução (Faraday–Lenz)',
+    'Gravitação',
+    'Hidrodinâmica (Bernoulli, vazão)',
+    'Física moderna (radioatividade, efeito fotoelétrico)'
+  ],
+  qui: [
+    'Físico-química',
+    'Soluções',
+    'Estequiometria',
+    'Eletroquímica',
+    'Química Orgânica',
+    'Atomística',
+    'Termoquímica',
+    'Cinética química (fatores da velocidade)',
+    'Equilíbrio químico (Le Chatelier)',
+    'Ácidos, bases e pH (neutralização, indicadores)',
+    'Gases e Propriedades coligativas',
+    'Separação de misturas (cotidiano)',
+    'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
+    'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
+    'Polímeros e materiais; Radioatividade (aplicações)'
+  ],
+  bio: [
+    'Ecologia',
+    'Citologia',
+    'Genética',
+    'Fisiologia',
+    'Evolução',
+    'Botânica',
+    'Zoologia',
+    'Biomas do Brasil',
+    'Saúde pública & parasitologia (doenças, vetores, prevenção)',
+    'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
+    'Histologia básica (tecidos – leitura de figura)'
+  ],
+  por: [
+    'Interpretação de texto',
+    'Gêneros textuais',
+    'Gramática',
+    'Literatura',
+    'Redação',
+    'Figuras de linguagem',
+    'Análise sintática',
+    'Variação linguística (registro, regionalismo, norma x uso)',
+    'Funções da linguagem e coerência/cohesão',
+    'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
+    'Linguagem publicitária e multiletramentos'
+  ],
+  ing: [
+    'Interpretação de texto',
+    'Vocabulário',
+    'Gramática básica',
+    'Tempos verbais',
+    'Conectivos',
+    'Expressões idiomáticas',
+    'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
+    'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
+    'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
+    'Coesão referencial (pronomes, referência/ellipsis)',
+    'Modal verbs, voz passiva, condicionais'
+  ],
+  esp: [
+    'Interpretação de texto',
+    'Vocabulário',
+    'Gramática básica',
+    'Tempos verbais',
+    'Conectivos',
+    'Expressões idiomáticas'
+  ],
+  his: [
+    'Brasil República',
+    'Brasil Colônia',
+    'Brasil Império',
+    'História Geral',
+    'Idade Média',
+    'Idade Moderna',
+    'Idade Contemporânea',
+    'História da América (América Latina e EUA nas questões de contexto)',
+    'República Velha',
+    'Era Vargas',
+    'Populismo',
+    'Ditadura Civil-Militar',
+    'Redemocratização/Nova República',
+    'Cidadania e direitos',
+    'Patrimônio, memória e cultura (interpretação de fonte histórica)'
+  ],
+  geo: [
+    'Geopolítica',
+    'Meio ambiente',
+    'Cartografia',
+    'Demografia',
+    'Climatologia',
+    'Geografia do Brasil',
+    'Urbanização',
+    'Globalização, redes e fluxos (comércio, finanças, migração)',
+    'Economia do Brasil (agro, indústria, energia, transportes, logística)',
+    'Geotecnologias (GPS, SIG, imagens de satélite)',
+    'Questão agrária (estrutura fundiária, modernização)',
+    'Recursos hídricos/biomas'
+  ],
+  fil: [
+    'Filosofia Antiga',
+    'Filosofia Medieval',
+    'Filosofia Moderna',
+    'Filosofia Contemporânea',
+    'Ética',
+    'Política',
+    'Estética',
+    'Teoria do conhecimento / Epistemologia',
+    'Lógica e argumentação (falácias, estrutura do argumento)',
+    'Filosofia da ciência (conceitos básicos)'
+  ],
+  soc: [
+    'Sociologia Clássica',
+    'Sociologia Contemporânea',
+    'Movimentos Sociais',
+    'Cultura',
+    'Estratificação Social',
+    'Globalização',
+    'Cidadania',
+    'Trabalho e economia (precarização, fordismo/toyotismo)',
+    'Instituições sociais (família, escola, Estado, mídia)',
+    'Gênero, raça e etnia (desigualdades e políticas públicas)',
+    'Urbanização, violência e cidade'
+  ]
 };
 
 // Questões de Brasil República
@@ -776,26 +309,6 @@ const GEOGRAFIA_QUESTIONS = [
     ],
     correct: "A",
     explanation: "O gráfico evidencia a concentração fundiária no Brasil, característica histórica da estrutura agrária brasileira. Poucos proprietários detêm grandes extensões de terra, enquanto muitos pequenos proprietários possuem áreas reduzidas, demonstrando a desigualdade na distribuição de terras no país."
-  }
-];
-
-// Questões de Matemática - Estatística
-const MATEMATICA_ESTATISTICA_QUESTIONS = [
-  {
-    id: 1,
-    title: "ENEM — Pesquisa Nacional por Amostra de Domicílios",
-    text: "Os dados do gráfico foram coletados por meio da Pesquisa Nacional por Amostra de Domicílios.",
-    image: "https://k6hrqrxuu8obbfwn.public.blob.vercel-storage.com/temp/09202af8-0e9a-491e-9d74-69cfd1c3d48c.jpg",
-    question: "Supondo-se que, no Sudeste, 14 900 estudantes foram entrevistados nessa pesquisa, quantos deles possuíam telefone móvel celular?",
-    alternatives: [
-      "A) 6553",
-      "B) 6 556", 
-      "C) 7450",
-      "D) 8344",
-      "E) 9 536"
-    ],
-    correct: "D",
-    explanation: "Para resolver esta questão, é necessário analisar o gráfico que mostra a porcentagem de estudantes que possuem telefone móvel celular na região Sudeste. Com base nos dados apresentados no gráfico, aplicando a porcentagem sobre o total de 14.900 estudantes entrevistados, chegamos ao resultado de 8.344 estudantes."
   }
 ];
 
@@ -1183,10 +696,6 @@ export default function SuperAppVestibulares() {
       // Para História, usar as questões de Brasil República
       const shuffled = [...BRASIL_REPUBLICA_QUESTIONS].sort(() => Math.random() - 0.5);
       setRandomQuestions(shuffled);
-    } else if (selectedSubject === 'mat') {
-      // Para Matemática, usar as questões de estatística
-      const shuffled = [...MATEMATICA_ESTATISTICA_QUESTIONS].sort(() => Math.random() - 0.5);
-      setRandomQuestions(shuffled);
     } else {
       setRandomQuestions([]);
     }
@@ -1204,14 +713,6 @@ export default function SuperAppVestibulares() {
   const selectedExamData = selectedExam ? EXAMS.find(e => e.id === selectedExam) : null;
   const selectedSubjectData = selectedExam && selectedSubject ? 
     SUBJECTS_BY_EXAM[selectedExam].find(s => s.id === selectedSubject) : null;
-
-  // Obter tópicos da matéria selecionada para o vestibular selecionado
-  const getTopicsForSubject = () => {
-    if (!selectedSubject || !selectedExam) return [];
-    const subjectTopics = TOPICS_BY_SUBJECT[selectedSubject];
-    if (!subjectTopics) return [];
-    return subjectTopics[selectedExam] || [];
-  };
 
   // Tela inicial - 4 botões dos vestibulares
   if (currentScreen === 'home') {
@@ -1403,7 +904,7 @@ export default function SuperAppVestibulares() {
 
   // Tela de assuntos que mais caem com abas
   if (currentScreen === 'topics' && selectedExamData && selectedSubjectData && selectedSubject) {
-    const topics = getTopicsForSubject();
+    const topics = TOPICS_BY_SUBJECT[selectedSubject as keyof typeof TOPICS_BY_SUBJECT] || [];
     
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -1471,48 +972,58 @@ export default function SuperAppVestibulares() {
                 </h2>
               </div>
               <div className="space-y-4">
-                {topics.map((topic, index) => {
-                  // Verificar se é o botão de questões aleatórias
-                  const isRandomButton = topic === '🎲 Questões aleatórias';
-                  
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        if (isRandomButton) {
-                          setActiveTopicTab('aleatorio');
-                          goToRandomQuestions();
-                        } else {
-                          selectTopic(topic);
-                        }
-                      }}
-                      className="w-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
-                            {isRandomButton ? (
-                              <Shuffle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            ) : (
-                              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                                {index + 1}
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-left">
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                              {topic}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">
-                              {isRandomButton ? 'Pratique com questões randômicas' : 'Clique para ver as questões'}
-                            </p>
-                          </div>
+                {topics.map((topic, index) => (
+                  <button
+                    key={index}
+                    onClick={() => selectTopic(topic)}
+                    className="w-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+                          <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                            {index + 1}
+                          </span>
                         </div>
-                        <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                        <div className="text-left">
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                            {topic}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">
+                            Clique para ver as questões
+                          </p>
+                        </div>
                       </div>
-                    </button>
-                  );
-                })}
+                      <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                    </div>
+                  </button>
+                ))}
+                
+                {/* Botão Aleatório sempre abaixo do último assunto */}
+                <button
+                  onClick={() => {
+                    setActiveTopicTab('aleatorio');
+                    goToRandomQuestions();
+                  }}
+                  className="w-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+                        <Shuffle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                          Questões Aleatórias
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                          Pratique com questões randômicas
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                  </div>
+                </button>
               </div>
             </div>
           )}
@@ -1593,7 +1104,7 @@ export default function SuperAppVestibulares() {
 
   // Tela de Questões Aleatórias
   if (currentScreen === 'random-questions' && selectedExamData && selectedSubjectData) {
-    if ((selectedSubject === 'his' || selectedSubject === 'geo' || selectedSubject === 'mat') && randomQuestions.length > 0) {
+    if ((selectedSubject === 'his' || selectedSubject === 'geo') && randomQuestions.length > 0) {
       const currentQuestion = randomQuestions[currentQuestionIndex];
       const isLastQuestion = currentQuestionIndex >= randomQuestions.length - 1;
 
@@ -1619,9 +1130,7 @@ export default function SuperAppVestibulares() {
                 <span className="text-3xl">{selectedSubjectData.icon}</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {selectedSubject === 'geo' ? 'Geografia - Questões Aleatórias' : 
-                 selectedSubject === 'mat' ? 'Matemática - Estatística' : 
-                 'Brasil República - Questões Aleatórias'}
+                {selectedSubject === 'geo' ? 'Geografia - Questões Aleatórias' : 'Brasil República - Questões Aleatórias'}
               </h1>
               <p className="text-gray-600 dark:text-gray-400 text-lg">
                 {selectedExamData.name}
@@ -1636,9 +1145,6 @@ export default function SuperAppVestibulares() {
                   // Reiniciar ou voltar
                   if (selectedSubject === 'geo') {
                     const shuffled = [...GEOGRAFIA_QUESTIONS].sort(() => Math.random() - 0.5);
-                    setRandomQuestions(shuffled);
-                  } else if (selectedSubject === 'mat') {
-                    const shuffled = [...MATEMATICA_ESTATISTICA_QUESTIONS].sort(() => Math.random() - 0.5);
                     setRandomQuestions(shuffled);
                   } else {
                     const shuffled = [...BRASIL_REPUBLICA_QUESTIONS].sort(() => Math.random() - 0.5);
@@ -1693,52 +1199,6 @@ export default function SuperAppVestibulares() {
                 Sistema de questões aleatórias em desenvolvimento para outras matérias!
               </p>
             </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de questões (Matemática - Estatística)
-  if (currentScreen === 'questions' && selectedSubject === 'mat' && selectedTopic === 'Estatística (média, gráficos e tabelas)' && selectedSubjectData && selectedExamData) {
-    const currentQuestion = MATEMATICA_ESTATISTICA_QUESTIONS[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex >= MATEMATICA_ESTATISTICA_QUESTIONS.length - 1;
-
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Questão {currentQuestionIndex + 1} de {MATEMATICA_ESTATISTICA_QUESTIONS.length}
-            </div>
-          </div>
-
-          <div className="text-center mb-12">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Estatística (média, gráficos e tabelas)
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name} - {selectedSubjectData.name}
-            </p>
-          </div>
-
-          {/* Questão atual */}
-          <div className="max-w-4xl mx-auto">
-            <QuestionCard 
-              question={currentQuestion}
-              onNext={isLastQuestion ? () => setCurrentQuestionIndex(0) : nextQuestion}
-            />
           </div>
         </div>
       </div>
