@@ -5,9 +5,321 @@ import { GraduationCap, ArrowLeft, BookOpen, Calendar, ChevronRight, Camera, Shu
 
 // SuperApp Vestibulares - Sistema completo de estudos
 // Tipos
-type Screen = 'home' | 'mode' | 'subjects' | 'years' | 'topics' | 'questions' | 'year-questions' | 'photos' | 'random-questions';
+type Screen = 'home' | 'mode' | 'subjects' | 'years' | 'topics' | 'questions' | 'year-questions' | 'photos' | 'random-questions' | 'year-day-selection' | 'year-phase-selection' | 'quiz-mode' | 'quiz-results';
 type ExamId = 'enem' | 'uerj' | 'fuvest' | 'puc';
 type TopicTab = 'assuntos' | 'fotos' | 'aleatorio';
+
+// Interface para questões do ENEM 2009
+interface QuizQuestion {
+  id: number;
+  text: string;
+  image?: string;
+  imageAfterText?: string; // Texto após o qual a imagem deve aparecer
+  alternatives: string[];
+  correct: string;
+  explanation: string;
+  subject: string; // Para "Estudo por Matéria"
+  topic: string; // Para "Estudo por Matéria"
+}
+
+// Questões do ENEM 2009 Dia 1
+const ENEM_2009_DIA1_QUESTIONS: QuizQuestion[] = [
+  {
+    id: 1,
+    text: "A atmosfera terrestre é composta pelos gases nitrogênio (N₂) e oxigênio (O₂), que somam cerca de 99%, e por gases traços, entre eles o gás carbônico (CO₂), vapor de água (H₂O), metano (CH₄), ozônio (O₃) e o óxido nitroso (N₂O), que compõem o restante 1% do ar que respiramos. Os gases traços, por serem constituídos por pelo menos três átomos, conseguem absorver o calor irradiado pela Terra, aquecendo o planeta. Esse fenômeno, que acontece há bilhões de anos, é chamado de efeito estufa. A partir da Revolução Industrial (século XIX), a concentração de gases traços na atmosfera, em particular o CO₂, tem aumentado significativamente, o que resultou no aumento da temperatura em escala global. Mais recentemente, outro fator tornou-se diretamente envolvido no aumento da concentração de CO₂ na atmosfera: o desmatamento.\n\nBROWN, I. F.; ALECHANDRE, A. S. Conceitos básicos sobre clima, carbono, florestas e comunidades. A. G. Moreira & S. Schwartzman. As mudanças climáticas globais e os ecossistemas brasileiros. Brasília: Instituto de Pesquisa Ambiental da Amazônia, 2000 (adaptado).\n\nConsiderando o texto, uma alternativa viável para combater o efeito estufa é",
+    alternatives: [
+      "A) reduzir o calor irradiado pela Terra mediante a substituição da produção primária pela industrialização refrigerada.",
+      "B) promover a queima da biomassa vegetal, responsável pelo aumento do efeito estufa devido à produção de CH₄.",
+      "C) reduzir o desmatamento, mantendo-se, assim, o potencial da vegetação em absorver o CO₂ da atmosfera.",
+      "D) aumentar a concentração atmosférica de H₂O, molécula capaz de absorver grande quantidade de calor.",
+      "E) remover moléculas orgânicas polares da atmosfera, diminuindo a capacidade delas de reter calor"
+    ],
+    correct: "C",
+    explanation: "Uma forma eficaz de minimizar o agravamento do efeito estufa é diminuir o ritmo do desmatamento. Ao preservar as áreas verdes, mantém-se a capacidade natural da vegetação de retirar CO₂ do ar por meio da fotossíntese, contribuindo para o equilíbrio climático.",
+    subject: "bio",
+    topic: "Ecologia"
+  },
+  {
+    id: 2,
+    text: "Estima-se que haja atualmente no mundo 40 milhões de pessoas infectadas pelo HIV (o vírus que causa a AIDS), sendo que as taxas de novas infecções continuam crescendo, principalmente na África, Ásia e Rússia. Nesse cenário de pandemia, uma vacina contra o HIV teria imenso impacto, pois salvaria milhões de vidas. Certamente seria um marco na história planetária e também uma esperança para as populações carentes de tratamento antiviral e de acompanhamento médico.\n\nTANURI, A.; FERREIRA JUNIOR, O. C. Vacina contra Aids: desafios e esperanças. Ciência Hoje (44) 26, 2009 (adaptado).\n\nUma vacina eficiente contra o HIV deveria",
+    alternatives: [
+      "A) induzir a imunidade, para proteger o organismo da contaminação viral.",
+      "B) ser capaz de alterar o genoma do organismo portador, induzindo a síntese de enzimas protetoras.",
+      "C) produzir antígenos capazes de se ligarem ao vírus, impedindo que este entre nas células do organismo humano.",
+      "D) ser amplamente aplicada em animais, visto que esses são os principais transmissores do vírus para os seres humanos.",
+      "E) estimular a imunidade, minimizando a transmissão do vírus por gotículas de saliva."
+    ],
+    correct: "A",
+    explanation: "As vacinas carregam versões enfraquecidas ou fragmentadas de antígenos, que estimulam o sistema imunológico a produzir anticorpos específicos. Esses anticorpos criados pelo organismo garantem proteção contra a infecção e a multiplicação do vírus responsável pela doença.",
+    subject: "bio",
+    topic: "Genética"
+  },
+  {
+    id: 3,
+    text: "Analise a figura.\n\nSupondo que seja necessário dar um título para essa figura, a alternativa que melhor traduziria o processo representado seria:",
+    image: "https://i.ibb.co/HT9BnrDY/IMG-2560.jpg",
+    alternatives: [
+      "A) Concentração média de álcool no sangue ao longo do dia.",
+      "B) Variação da frequência da ingestão de álcool ao longo das horas.",
+      "C) Concentração mínima de álcool no sangue a partir de diferentes dosagens.",
+      "D) Estimativa de tempo necessário para metabolizar diferentes quantidades de álcool.",
+      "E) Representação gráfica da distribuição de frequência de álcool em determinada hora do dia."
+    ],
+    correct: "D",
+    explanation: "A leitura do gráfico mostra que a concentração de álcool no sangue aumenta gradualmente até atingir um pico e, em seguida, diminui conforme o corpo metaboliza a substância. Quanto maior a quantidade ingerida, mais tempo o organismo leva para eliminar esse álcool da corrente sanguínea.",
+    subject: "fis",
+    topic: "Cinemática"
+  },
+  {
+    id: 4,
+    text: "Em um experimento, preparou-se um conjunto de plantas por técnica de clonagem a partir de uma planta original que apresentava folhas verdes. Esse conjunto foi dividido em dois grupos, que foram tratados de maneira idêntica, com exceção das condições de iluminação, sendo um grupo exposto a ciclos de iluminação solar natural e outro mantido no escuro. Após alguns dias, observou-se que o grupo exposto à luz apresentava folhas verdes como a planta original e o grupo cultivado no escuro apresentava folhas amareladas.\n\nAo final do experimento, os dois grupos de plantas apresentaram",
+    alternatives: [
+      "A) os genótipos e os fenótipos idênticos.",
+      "B) os genótipos idênticos e os fenótipos diferentes.",
+      "C) diferenças nos genótipos e fenótipos.",
+      "D) o mesmo fenótipo e apenas dois genótipos diferentes.",
+      "E) o mesmo fenótipo e grande variedade de genótipos."
+    ],
+    correct: "B",
+    explanation: "Plantas obtidas por clonagem mantêm o mesmo material genético do indivíduo original, porém podem apresentar características externas distintas, já que fatores ambientais — como presença de luz ou escuridão — influenciam a manifestação dos fenótipos.",
+    subject: "bio",
+    topic: "Botânica"
+  },
+  {
+    id: 5,
+    text: "Na linha de uma tradição antiga, o astrônomo grego Ptolomeu (100-170 d.C.) afirmou a tese do geocentrismo, segundo a qual a Terra seria o centro do universo, sendo que o Sol, a Lua e os planetas girariam em seu redor em órbitas circulares. A teoria de Ptolomeu resolvia de modo razoável os problemas astronômicos da sua época. Vários séculos mais tarde, o clérigo e astrônomo polonês Nicolau Copérnico (1473-1543), ao encontrar inexatidões na teoria de Ptolomeu, formulou a teoria do heliocentrismo, segundo a qual o Sol deveria ser considerado o centro do universo, com a Terra, a Lua e os planetas girando circularmente em torno dele. Por fim, o astrônomo e matemático alemão Johannes Kepler (1571-1630), depois de estudar o planeta Marte por cerca de trinta anos, verificou que a sua órbita é elíptica. Esse resultado generalizou-se para os demais planetas.\n\nA respeito dos estudiosos citados no texto, é correto afirmar que",
+    alternatives: [
+      "A) Ptolomeu apresentou as ideias mais valiosas, por serem mais antigas e tradicionais.",
+      "B) Copérnico desenvolveu a teoria do heliocentrismo inspirado no contexto político do Rei Sol.",
+      "C) Copérnico viveu em uma época em que a pesquisa científica era livre e amplamente incentivada pelas autoridades.",
+      "D) Kepler estudou o planeta Marte para atender às necessidades de expansão econômica e científica da Alemanha.",
+      "E) Kepler apresentou uma teoria científica que, graças aos métodos aplicados, pôde ser testada e generalizada."
+    ],
+    correct: "E",
+    explanation: "As Leis de Kepler foram ampliadas para descrever o movimento de qualquer corpo que orbite o Sol. Essa formulação só foi possível graças às medições astronômicas precisas feitas por Tycho Brahe, que permitiram a Kepler elaborar seus modelos.",
+    subject: "fis",
+    topic: "Gravitação"
+  },
+  {
+    id: 6,
+    text: "Um novo método para produzir insulina artificial que utiliza tecnologia de DNA recombinante foi desenvolvido por pesquisadores do Departamento de Biologia Celular da Universidade de Brasília (UnB) em parceria com a iniciativa privada. Os pesquisadores modificaram geneticamente a bactéria Escherichia coli para torná-la capaz de sintetizar o hormônio. O processo permitiu fabricar insulina em maior quantidade e em apenas 30 dias, um terço do tempo necessário para obtê-la pelo método tradicional, que consiste na extração do hormônio a partir do pâncreas de animais abatidos.\n\nCiência Hoje, 24 abr. 2001. Disponível em: http://cienciahoje.uol.com.br (adaptado).\n\nA produção de insulina pela técnica do DNA recombinante tem, como consequência,",
+    alternatives: [
+      "A) o aperfeiçoamento do processo de extração de insulina a partir do pâncreas suíno.",
+      "B) a seleção de microrganismos resistentes a antibióticos.",
+      "C) o progresso na técnica da síntese química de hormônios.",
+      "D) impacto favorável na saúde de indivíduos diabéticos.",
+      "E) a criação de animais transgênicos."
+    ],
+    correct: "D",
+    explanation: "Quando bactérias geneticamente modificadas são usadas para produzir a insulina humana, o tratamento dos diabéticos se torna mais seguro. Isso ocorre porque o hormônio obtido por engenharia genética é idêntico ao produzido pelo corpo humano, evitando a resistência que surgia com a insulina retirada de tecidos de suínos e bovinos.",
+    subject: "bio",
+    topic: "Biotecnologia"
+  },
+  {
+    id: 7,
+    text: "O ciclo biogeoquímico do carbono compreende diversos compartimentos, entre os quais a Terra, a atmosfera e os oceanos, e diversos processos que permitem a transferência de compostos entre esses reservatórios. Os estoques de carbono armazenados na forma de recursos não renováveis, por exemplo, o petróleo, são limitados, sendo de grande relevância que se perceba a importância da substituição de combustíveis fósseis por combustíveis de fontes renováveis.\n\nA utilização de combustíveis fósseis interfere no ciclo do carbono, pois provoca",
+    alternatives: [
+      "A) aumento da porcentagem de carbono contido na Terra.",
+      "B) redução na taxa de fotossíntese dos vegetais superiores.",
+      "C) aumento da produção de carboidratos de origem vegetal.",
+      "D) aumento na quantidade de carbono presente na atmosfera.",
+      "E) redução da quantidade global de carbono armazenado nos oceanos."
+    ],
+    correct: "D",
+    explanation: "A queima de combustíveis fósseis eleva a concentração de dióxido de carbono (CO₂) na atmosfera. Esse aumento intensifica o efeito estufa, contribuindo para o aquecimento global.",
+    subject: "bio",
+    topic: "Ecologia"
+  },
+  {
+    id: 8,
+    text: "A economia moderna depende da disponibilidade de muita energia em diferentes formas, para funcionar e crescer. No Brasil, o consumo total de energia pelas indústrias cresceu mais de quatro vezes no período entre 1970 e 2005. Enquanto os investimentos em energias limpas e renováveis, como solar e eólica, ainda são incipientes, ao se avaliar a possibilidade de instalação de usinas geradoras de energia elétrica, diversos fatores devem ser levados em consideração, tais como os impactos causados ao ambiente e às populações locais.\n\nRicardo, B. e Campanili, M. Almanaque Brasil Socioambiental. Instituto Socioambiental. São Paulo, 2007 (adaptado).\n\nEm uma situação hipotética, optou-se por construir uma usina hidrelétrica em região que abrange diversas quedas d'água em rios cercados por mata, alegando-se que causaria impacto ambiental muito menor que uma usina termelétrica. Entre os possíveis impactos da instalação de uma usina hidrelétrica nessa região, inclui-se",
+    alternatives: [
+      "A) a poluição da água por metais da usina.",
+      "B) a destruição do habitat de animais terrestres.",
+      "C) o aumento expressivo na liberação de CO₂ para a atmosfera.",
+      "D) o consumo não renovável de toda água que passa pelas turbinas.",
+      "E) o aprofundamento no leito do rio, com a menor deposição de resíduos no trecho de rio anterior à represa."
+    ],
+    correct: "B",
+    explanation: "A construção de uma usina hidrelétrica pode gerar diversos impactos ambientais, entre eles a perda de habitats terrestres, já que grandes áreas são inundadas para a formação do reservatório, afetando diretamente a fauna que vive nesses locais.",
+    subject: "bio",
+    topic: "Ecologia"
+  },
+  {
+    id: 9,
+    text: "As mudanças climáticas e da vegetação ocorridas nos trópicos da América do Sul têm sido bem documentadas por diversos autores, existindo um grande acúmulo de evidências geológicas ou paleoclimatológicas que evidenciam essas mudanças ocorridas durante o Quaternário nessa região. Essas mudanças resultaram em restrição da distribuição das florestas pluviais, com expansões concomitantes de habitats não-florestais durante períodos áridos (glaciais), seguido da expansão das florestas pluviais e restrição das áreas não-florestais durante períodos úmidos (interglaciais).\n\nDisponível em: http://zoo.bio.ufpr.br. Acesso em: 1 maio 2009.\n\nDurante os períodos glaciais,",
+    alternatives: [
+      "A) as áreas não-florestais ficam restritas a refúgios ecológicos devido à baixa adaptabilidade de espécies não-florestais a ambientes áridos.",
+      "B) grande parte da diversidade de espécies vegetais é reduzida, uma vez que necessitam de condições semelhantes às dos períodos interglaciais.",
+      "C) a vegetação comum ao cerrado deve ter se limitado a uma pequena região do centro do Brasil, da qual se expandiu até atingir a atual distribuição.",
+      "D) plantas com adaptações ao clima árido, como o desenvolvimento de estruturas que reduzem a perda de água, devem apresentar maior área de distribuição.",
+      "E) florestas tropicais como a amazônica apresentam distribuição geográfica mais ampla, uma vez que são densas e diminuem a ação da radiação solar sobre o solo e reduzem os efeitos da aridez."
+    ],
+    correct: "D",
+    explanation: "Durante as eras glaciais, ocorreu uma ampliação das formações vegetais típicas de ambientes secos, uma vez que o clima global se tornou mais frio e mais árido, favorecendo esse tipo de vegetação.",
+    subject: "bio",
+    topic: "Ecologia"
+  },
+  {
+    id: 10,
+    text: "Para que todos os órgãos do corpo humano funcionem em boas condições, é necessário que a temperatura do corpo fique sempre entre 36 °C e 37 °C. Para manter-se dentro dessa faixa, em dias de muito calor ou durante intensos exercícios físicos, uma série de mecanismos fisiológicos é acionada.\n\nPode-se citar como o principal responsável pela manutenção da temperatura corporal humana o sistema",
+    alternatives: [
+      "A) digestório, pois produz enzimas que atuam na quebra de alimentos calóricos.",
+      "B) imunológico, pois suas células agem no sangue, diminuindo a condução do calor.",
+      "C) nervoso, pois promove a sudorese, que permite perda de calor por meio da evaporação da água.",
+      "D) reprodutor, pois secreta hormônios que alteram a temperatura, principalmente durante a menopausa.",
+      "E) endócrino, pois fabrica anticorpos que, por sua vez, atuam na variação do diâmetro dos vasos periféricos."
+    ],
+    correct: "C",
+    explanation: "No ser humano, o sistema nervoso exerce papel central no controle da temperatura corporal. Durante atividades físicas intensas, ele aciona mecanismos como o aumento da transpiração, permitindo que o corpo disperse o excesso de calor e mantenha a endotermia.",
+    subject: "bio",
+    topic: "Fisiologia Humana"
+  },
+  {
+    id: 11,
+    text: "A fotossíntese é importante para a vida na Terra. Nos cloroplastos dos organismos fotossintetizantes, a energia solar é convertida em energia química que, juntamente com água e gás carbônico (CO₂), é utilizada para a síntese de compostos orgânicos (carboidratos). A fotossíntese é o único processo de importância biológica capaz de realizar essa conversão. Todos os organismos, incluindo os produtores, aproveitam a energia armazenada nos carboidratos para impulsionar os processos celulares, liberando CO₂ para a atmosfera e água para a célula por meio da respiração celular. Além disso, grande fração dos recursos energéticos do planeta, produzidos tanto no presente (biomassa) como em tempos remotos (combustível fóssil), é resultante da atividade fotossintética.\n\nAs informações sobre obtenção e transformação dos recursos naturais por meio dos processos vitais de fotossíntese e respiração, descritas no texto, permitem concluir que",
+    alternatives: [
+      "A) o CO₂ e a água são moléculas de alto teor energético.",
+      "B) os carboidratos convertem energia solar em energia química.",
+      "C) a vida na Terra depende, em última análise, da energia proveniente do Sol.",
+      "D) o processo respiratório é responsável pela retirada de carbono da atmosfera.",
+      "E) a produção de biomassa e de combustível fóssil, por si, é responsável pelo aumento de CO₂ atmosférico."
+    ],
+    correct: "C",
+    explanation: "A energia que sustenta a vida na Terra tem origem no Sol. Todos os organismos, direta ou indiretamente, dependem da energia solar, seja por meio da fotossíntese realizada pelos produtores, seja pelo consumo de seres que dela se beneficiam.",
+    subject: "bio",
+    topic: "Botânica"
+  },
+  {
+    id: 12,
+    text: "Sabões são sais de ácidos carboxílicos de cadeia longa utilizados com a finalidade de facilitar, durante processos de lavagem, a remoção de substâncias de baixa solubilidade em água, por exemplo, óleos e gorduras. A figura a seguir representa a estrutura de uma molécula de sabão.\n\nEm solução, os ânions do sabão podem hidrolisar a água e, desse modo, formar o ácido carboxílico correspondente. Por exemplo, para o estearato de sódio, é estabelecido o seguinte equilíbrio:\nCH₃(CH₂)₁₆COO⁻ + H₂O ⇌ CH₃(CH₂)₁₆COOH + OH⁻\nUma vez que o ácido carboxílico formado é pouco solúvel em água e menos eficiente na remoção de gorduras, o pH do meio deve ser controlado de maneira a evitar que o equilíbrio acima seja deslocado para a direita.\nCom base nas informações do texto, é correto concluir que os sabões atuam de maneira",
+    image: "https://i.ibb.co/bjvCt5r6/IMG-2650.jpg",
+    imageAfterText: "A figura a seguir representa a estrutura de uma molécula de sabão.",
+    alternatives: [
+      "A) mais eficiente em pH básico.",
+      "B) mais eficiente em pH ácido.",
+      "C) mais eficiente em pH neutro.",
+      "D) eficiente em qualquer faixa de pH.",
+      "E) mais eficiente em pH ácido ou neutro."
+    ],
+    correct: "A",
+    explanation: "O desempenho do sabão aumenta quando o ácido carboxílico permanece na sua forma ionizada, pois é ela que atua como agente de limpeza. Para favorecer esse estado, o equilíbrio CH₃(CH₂)₁₆COO⁻ + H₂O ⇌ CH₃(CH₂)₁₆COOH + OH⁻ precisa ser deslocado para a esquerda. Isso ocorre em meio básico, onde há grande quantidade de íons OH⁻, resultando em um pH acima de 7.",
+    subject: "qui",
+    topic: "Química Orgânica"
+  },
+  {
+    id: 13,
+    text: "A abertura e a pavimentação de rodovias em zonas rurais e regiões afastadas dos centros urbanos, por um lado, possibilita melhor acesso e maior integração entre as comunidades, contribuindo com o desenvolvimento social e urbano de populações isoladas. Por outro lado, a construção de rodovias pode trazer impactos indesejáveis ao meio ambiente, visto que a abertura de estradas pode resultar na fragmentação de habitats, comprometendo o fluxo gênico e as interações entre espécies silvestres, além de prejudicar o fluxo natural de rios e riachos, possibilitar o ingresso de espécies exóticas em ambientes naturais e aumentar a pressão antrópica sobre os ecossistemas nativos.\n\nNesse contexto, para conciliar os interesses aparentemente contraditórios entre o progresso social e urbano e a conservação do meio ambiente, seria razoável",
+    alternatives: [
+      "A) impedir a abertura e a pavimentação de rodovias em áreas rurais e em regiões preservadas, pois a qualidade de vida e as tecnologias encontradas nos centros urbanos são prescindíveis às populações rurais.",
+      "B) impedir a abertura e a pavimentação de rodovias em áreas rurais e em regiões preservadas, promovendo a migração das populações rurais para os centros urbanos, onde a qualidade de vida é melhor.",
+      "C) permitir a abertura e a pavimentação de rodovias apenas em áreas rurais produtivas, haja vista que nas demais áreas o retorno financeiro necessário para produzir uma melhoria na qualidade de vida da região não é garantido.",
+      "D) permitir a abertura e a pavimentação de rodovias, desde que comprovada a sua real necessidade e após a realização de estudos que demonstrem ser possível contornar ou compensar seus impactos ambientais.",
+      "E) permitir a abertura e a pavimentação de rodovias, haja vista que os impactos ao meio ambiente são temporários e podem ser facilmente revertidos com as tecnologias existentes para recuperação de áreas degradadas."
+    ],
+    correct: "D",
+    explanation: "A abertura de estradas em áreas rurais ou regiões distantes deve ser planejada com cautela, pois tais intervenções podem gerar danos ambientais significativos. Assim, sua construção só se justifica quando houver necessidade comprovada e após estudos técnicos que garantam alternativas capazes de reduzir ou evitar esses impactos.",
+    subject: "bio",
+    topic: "Ecologia"
+  },
+  {
+    id: 14,
+    text: "A eficiência de um processo de conversão de energia é definida como a razão entre a produção de energia ou trabalho útil e o total de entrada de energia no processo. A figura mostra um processo com diversas etapas. Nesse caso, a eficiência geral será igual ao produto das eficiências das etapas individuais. A entrada de energia que não se transforma em trabalho útil é perdida sob formas não utilizáveis (como resíduos de calor).\n\nAumentar a eficiência dos processos de conversão de energia implica economizar recursos e combustíveis. Das propostas seguintes, qual resultará em maior aumento da eficiência geral do processo?",
+    image: "https://i.ibb.co/1YX4mbmn/IMG-2565.jpg",
+    imageAfterText: "(como resíduos de calor).",
+    alternatives: [
+      "A) Aumentar a quantidade de combustível para queima na usina de força.",
+      "B) Utilizar lâmpadas incandescentes, que geram pouco calor e muita luminosidade.",
+      "C) Manter o menor número possível de aparelhos elétricos em funcionamento nas moradias.",
+      "D) Utilizar cabos com menor diâmetro nas linhas de transmissão a fim de economizar o material condutor.",
+      "E) Utilizar materiais com melhores propriedades condutoras nas linhas de transmissão e lâmpadas fluorescentes nas moradias."
+    ],
+    correct: "E",
+    explanation: "Quando se utiliza um material com maior capacidade de conduzir eletricidade, as perdas por Efeito Joule diminuem. Além disso, para uma mesma potência, lâmpadas fluorescentes apresentam melhor rendimento do que as incandescentes, convertendo a energia de forma mais eficiente.",
+    subject: "fis",
+    topic: "Eletrodinâmica"
+  },
+  {
+    id: 15,
+    text: "Para que apresente condutividade elétrica adequada a muitas aplicações, o cobre bruto obtido por métodos térmicos é purificado eletroliticamente. Nesse processo, o cobre bruto impuro constitui o ânodo da célula, que está imerso em uma solução de CuSO₄. À medida que o cobre impuro é oxidado no ânodo, íons Cu²⁺ da solução são depositados na forma pura no cátodo. Quanto às impurezas metálicas, algumas são oxidadas, passando à solução, enquanto outras simplesmente se desprendem do ânodo e se sedimentam abaixo dele. As impurezas sedimentadas são posteriormente processadas, e sua comercialização gera receita que ajuda a cobrir os custos do processo. A série eletroquímica a seguir lista o cobre e alguns metais presentes como impurezas no cobre bruto de acordo com suas forças redutoras relativas.\n\nEntre as impurezas metálicas que constam na série apresentada, as que se sedimentam abaixo do ânodo de cobre são",
+    image: "https://i.ibb.co/7x9Sv9JJ/IMG-2655.jpg",
+    alternatives: [
+      "A) Au, Pt, Ag, Zn, Ni e Pb.",
+      "B) Au, Pt e Ag.",
+      "C) Zn, Ni e Pb.",
+      "D) Au e Zn.",
+      "E) Ag e Pb."
+    ],
+    correct: "B",
+    explanation: "No processo de purificação eletrolítica do cobre, o cobre impuro funciona como ânodo e se oxida em solução, liberando íons Cu²⁺ que depois se depositam no cátodo na forma metálica pura. As impurezas presentes no cobre bruto podem ter dois comportamentos: algumas se oxidam e passam para a solução, enquanto outras, por apresentarem pouca tendência a perder elétrons, simplesmente se soltam do ânodo e se acumulam como resíduos sólidos. Metais como ouro, platina e prata quase não se oxidam porque possuem baixa força redutora; por isso, não viram íons e acabam formando a chamada lama anódica, depositando-se no fundo da célula eletrolítica.",
+    subject: "qui",
+    topic: "Eletroquímica"
+  },
+  {
+    id: 16,
+    text: "A figura seguinte representa um modelo de transmissão da informação genética nos sistemas biológicos. No fim do processo, que inclui a replicação, a transcrição e a tradução, há três formas proteicas diferentes denominadas a, b e c.\n\nDepreende-se do modelo que",
+    image: "https://i.ibb.co/W4L4PXws/IMG-2569.jpg",
+    alternatives: [
+      "A) a única molécula que participa da produção de proteínas é o DNA.",
+      "B) o fluxo de informação genética, nos sistemas biológicos, é unidirecional.",
+      "C) as fontes de informação ativas durante o processo de transcrição são as proteínas.",
+      "D) é possível obter diferentes variantes proteicas a partir de um mesmo produto de transcrição.",
+      "E) a molécula de DNA possui forma circular e as demais moléculas possuem forma de fita simples linearizadas."
+    ],
+    correct: "D",
+    explanation: "O esquema apresentado mostra que um único RNA produzido pela transcrição pode originar diferentes proteínas. Isso ocorre porque o RNA pode ser traduzido de maneiras distintas, ou sofrer processamento alternativo, o que permite que várias sequências proteicas diferentes sejam formadas a partir do mesmo produto de transcrição. Assim, o modelo evidencia a possibilidade de gerar múltiplas proteínas a partir de um único RNA, ampliando a variedade funcional no organismo.",
+    subject: "bio",
+    topic: "Biotecnologia"
+  },
+  {
+    id: 17,
+    text: "O manual de instruções de um aparelho de ar-condicionado apresenta a seguinte tabela, com dados técnicos para diversos modelos:\n\nConsidere-se que um auditório possua capacidade para 40 pessoas, cada uma produzindo uma quantidade média de calor, e que praticamente todo o calor que flui para fora do auditório o faz por meio dos aparelhos de ar-condicionado. Nessa situação, entre as informações listadas, aquelas essenciais para se determinar quantos e/ou quais aparelhos de ar-condicionado são precisos para manter, com lotação máxima, a temperatura interna do auditório agradável e constante, bem como determinar a espessura da fiação do circuito elétrico para a ligação desses aparelhos, são",
+    image: "https://i.ibb.co/yF68wY0h/IMG-2656.jpg",
+    alternatives: [
+      "A) vazão de ar e potência.",
+      "B) vazão de ar e corrente elétrica – ciclo frio.",
+      "C) eficiência energética e potência.",
+      "D) capacidade de refrigeração e frequência.",
+      "E) capacidade de refrigeração e corrente elétrica – ciclo frio."
+    ],
+    correct: "E",
+    explanation: "Para que a temperatura do auditório permaneça confortável mesmo com 40 pessoas, o aparelho de ar-condicionado precisa ser capaz de retirar o calor gerado no ambiente. Quem indica essa capacidade é o valor de capacidade de refrigeração, informado na tabela do fabricante.\n\nAlém disso, a instalação elétrica que alimentará os aparelhos deve suportar a corrente consumida sem risco de aquecimento excessivo. A espessura do fio (área da seção transversal) é definida de acordo com a corrente elétrica do ciclo frio.\n\nA relação entre o fio, a corrente e o aquecimento é explicada pelas Leis de Ohm.\n\n1ª Lei de Ohm:\n\nR = U / i\n\nEssa equação mostra que, para uma tensão fixa, quanto maior a corrente, menor deve ser a resistência do fio.\n\n⸻\n\n2ª Lei de Ohm:\n\nR = ρ · L / A\n\nonde:\nρ = resistividade do material\nL = comprimento do fio\nA = área da seção transversal do fio\n\nOu seja:\n→ fios mais grossos (A maior) têm resistência menor, logo aquecem menos.\n\n⸻\n\nComparando as duas Leis de Ohm:\n\nU / i = ρ · L / A\n\nA partir disso, isolamos a corrente:\n\ni = (U · A) / (ρ · L)",
+    subject: "fis",
+    topic: "Eletricidade"
+  },
+  {
+    id: 18,
+    text: "O Brasil pode se transformar no primeiro país das Américas a entrar no seleto grupo das nações que dispõem de trens-bala. O Ministério dos Transportes prevê o lançamento do edital de licitação internacional para a construção da ferrovia de alta velocidade Rio–São Paulo. A viagem ligará os 403 quilômetros entre a Central do Brasil, no Rio, e a Estação da Luz, no centro da capital paulista, em uma hora e 25 minutos.\n\nDisponível em: http://oglobo.globo.com.\nAcesso em: 14 jul. 2009.\n\nDevido à alta velocidade, um dos problemas a ser enfrentado na escolha do trajeto que será percorrido pelo trem é o dimensionamento das curvas. Considerando-se que uma aceleração lateral confortável para os passageiros e segura para o trem seja de 0,1 g, em que g é a aceleração da gravidade (considerada igual a 10 m/s²), e que a velocidade do trem se mantenha constante em todo o percurso, seria correto prever que as curvas existentes no trajeto deveriam ter raio de curvatura mínimo de, aproximadamente,",
+    alternatives: [
+      "A) 80 m.",
+      "B) 430 m.",
+      "C) 800 m.",
+      "D) 1.600 m.",
+      "E) 6.400 m."
+    ],
+    correct: "E",
+    explanation: "1) Cálculo da velocidade média\nDistância: 403 km\nTempo: 1 hora e 25 minutos = 1,42 h\n\nVelocidade média:\nV = 403 / 1,42 ≈ 283,8 km/h\n\nConvertendo para m/s:\n283,8 / 3,6 ≈ 78,8 m/s\n\n⸻\n\n2) Cálculo do raio mínimo da curva\nA aceleração centrípeta é dada por:\na = V² / R\n\nPara uma aceleração lateral confortável de 0,1 g:\n0,1 × 10 = V² / R\n\nSubstituindo a velocidade:\n1 = (78,8)² / R\n\nR ≈ 6209 m\n\nEntre as opções fornecidas, o valor mais próximo é 6400 m.",
+    subject: "fis",
+    topic: "Leis de Newton"
+  },
+  {
+    id: 19,
+    text: "A instalação elétrica de uma casa envolve várias etapas, desde a alocação dos dispositivos, instrumentos e aparelhos elétricos, até a escolha dos materiais que a compõem, passando pelo dimensionamento da potência requerida, da fiação necessária, dos eletrodutos*, entre outras. Para cada aparelho elétrico existe um valor de potência associado. Valores típicos de potências para alguns aparelhos elétricos são apresentados no quadro seguinte:\n\n*Eletrodutos são condutos por onde passa a fiação de uma instalação elétrica, com a finalidade de protegê-la.\n\nA escolha das lâmpadas é essencial para obtenção de uma boa iluminação. A potência da lâmpada deverá estar de acordo com o tamanho do cômodo a ser iluminado. O quadro a seguir mostra a relação entre as áreas dos cômodos (em m²) e as potências das lâmpadas (em W), e foi utilizado como referência para o primeiro pavimento de uma residência.\n\nObs.: Para efeitos dos cálculos das áreas, as paredes são desconsideradas.\n\nConsiderando a planta baixa fornecida, com todos os aparelhos em funcionamento, a potência total, em watts, será de",
+    image: "https://i.ibb.co/1gMdndk/IMG-2570.jpg",
+    imageAfterText: "Valores típicos de potências para alguns aparelhos elétricos são apresentados no quadro seguinte:",
+    alternatives: [
+      "A) 4.070.",
+      "B) 4.270.",
+      "C) 4.320.",
+      "D) 4.390.",
+      "E) 4.470."
+    ],
+    correct: "D",
+    explanation: "(I) Observando a planta fornecida, cada cômodo possui um aparelho elétrico indicado na tabela inicial. A potência total desses equipamentos é obtida somando os valores correspondentes:\n\n120 W + 3000 W + 500 W + 200 W + 200 W + 50 W = 4070 W\n\n⸻\n\n(II) Em seguida, determina-se a potência necessária das lâmpadas a partir da área de cada ambiente\n\n       Sala: 3 m × 3 m = 9 m² → 100 W\n\tBanheiro: 1,5 m × 2,1 m ≈ 3,1 m² → 60 W\n\tCorredor: 0,9 m × 1,5 m ≈ 1,3 m² → 60 W\n\tQuarto: 2,8 m × 3 m = 8,4 m² → 100 W\n\nSomando:\n100 W + 60 W + 60 W + 100 W = 320 W\n\n(III) A potência total instalada na casa é a soma dos aparelhos com as lâmpadas:\n\n4070 W + 320 W = 4390 W",
+    subject: "fis",
+    topic: "Eletricidade"
+  }
+];
 
 // Dados dos vestibulares
 const EXAMS = [
@@ -33,16 +345,15 @@ const SUBJECTS_BY_EXAM = {
     { id: 'soc', name: 'Sociologia', icon: '👥', color: 'bg-pink-500' }
   ],
   uerj: [
-    { id: 'mat', name: 'Matemática', icon: '📊', color: 'bg-blue-500' },
-    { id: 'fis', name: 'Física', icon: '⚡', color: 'bg-yellow-500' },
+    { id: 'mat', name: 'Matemática', icon: '📘', color: 'bg-blue-500' },
+    { id: 'fis', name: 'Física', icon: '⚛️', color: 'bg-yellow-500' },
     { id: 'qui', name: 'Química', icon: '🧪', color: 'bg-green-500' },
     { id: 'bio', name: 'Biologia', icon: '🧬', color: 'bg-emerald-500' },
-    { id: 'por', name: 'Português / Literatura', icon: '📝', color: 'bg-red-500' },
-    { id: 'ing', name: 'Inglês', icon: '🇺🇸', color: 'bg-indigo-500' },
-    { id: 'his', name: 'História', icon: '📚', color: 'bg-amber-500' },
+    { id: 'his', name: 'História', icon: '📜', color: 'bg-amber-500' },
     { id: 'geo', name: 'Geografia', icon: '🌍', color: 'bg-cyan-500' },
-    { id: 'soc', name: 'Sociologia', icon: '👥', color: 'bg-pink-500' },
-    { id: 'fil', name: 'Filosofia', icon: '🤔', color: 'bg-purple-500' }
+    { id: 'por', name: 'Português e Literatura', icon: '📚', color: 'bg-red-500' },
+    { id: 'fil', name: 'Filosofia e Sociologia', icon: '💡', color: 'bg-purple-500' },
+    { id: 'ing', name: 'Inglês', icon: '🇬🇧', color: 'bg-indigo-500' }
   ],
   fuvest: [
     { id: 'mat', name: 'Matemática', icon: '📊', color: 'bg-blue-500' },
@@ -67,904 +378,161 @@ const SUBJECTS_BY_EXAM = {
   ]
 };
 
-// Assuntos por matéria - ATUALIZADOS PARA FUVEST/USP
+// Assuntos por matéria
 const TOPICS_BY_SUBJECT: Record<string, Record<ExamId, string[]>> = {
-  mat: {
-    enem: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Funções',
-      'Geometria plana',
-      'Geometria espacial',
-      'Trigonometria',
-      'Probabilidade e estatística',
-      'Análise combinatória',
-      'Progressões (PA e PG)',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Aritmética e porcentagem',
-      'Estatística (média, gráficos e tabelas)',
-      'Geometria plana e espacial',
-      'Funções',
-      'Probabilidade',
-      'PA/PG',
-      'Trigonometria',
-      'Matemática financeira (juros simples/compostos, desconto)',
-      'Análise combinatória (arranjos, combinações, permutações)',
-      'Proporcionalidade & escalas (regra de três, unidades, mapas)',
-      'Geometria analítica básica (distância, área no plano cartesiano)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  fis: {
-    enem: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Leis de Newton e dinâmica',
-      'Trabalho, energia e potência',
-      'Cinemática',
-      'Eletricidade',
-      'Termologia',
-      'Óptica',
-      'Ondulatória',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Eletrodinâmica',
-      'Cinemática',
-      'Dinâmica',
-      'Termologia',
-      'Óptica',
-      'Hidrostática',
-      'Ondulatória',
-      'Trabalho, energia e potência',
-      'Impulso e quantidade de movimento (colisões)',
-      'Termodinâmica (1ª lei, máquinas térmicas, rendimento)',
-      'Eletromagnetismo/Indução (Faraday–Lenz)',
-      'Gravitação',
-      'Hidrodinâmica (Bernoulli, vazão)',
-      'Física moderna (radioatividade, efeito fotoelétrico)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  qui: {
-    enem: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Estequiometria',
-      'Estrutura atômica',
-      'Química orgânica',
-      'Termoquímica',
-      'Soluções',
-      'Equilíbrio químico',
-      'Eletroquímica',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Físico-química',
-      'Soluções',
-      'Estequiometria',
-      'Eletroquímica',
-      'Química Orgânica',
-      'Atomística',
-      'Termoquímica',
-      'Cinética química (fatores da velocidade)',
-      'Equilíbrio químico (Le Chatelier)',
-      'Ácidos, bases e pH (neutralização, indicadores)',
-      'Gases e Propriedades coligativas',
-      'Separação de misturas (cotidiano)',
-      'Estrutura da matéria: ligações, geometria e polaridade; tabela periódica (tendências)',
-      'Química ambiental (água, poluição, chuva ácida, efeito estufa)',
-      'Polímeros e materiais; Radioatividade (aplicações)',
-      '🎲 Questões aleatórias'
-    ]
-  },
   bio: {
     enem: [
       'Ecologia',
       'Citologia',
       'Genética',
-      'Fisiologia',
+      'Fisiologia Humana',
       'Evolução',
       'Botânica',
       'Zoologia',
       'Biomas do Brasil',
       'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
-      'Histologia básica (tecidos – leitura de figura)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Ecologia',
-      'Citologia',
-      'Genética',
-      'Fisiologia',
-      'Evolução',
-      'Botânica',
-      'Zoologia',
-      'Biomas do Brasil',
-      'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
-      'Histologia básica (tecidos – leitura de figura)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Genética',
-      'Ecologia',
-      'Citologia',
-      'Fisiologia humana',
-      'Evolução',
       'Biotecnologia',
-      'Botânica',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Ecologia',
-      'Citologia',
-      'Genética',
-      'Fisiologia',
-      'Evolução',
-      'Botânica',
-      'Zoologia',
-      'Biomas do Brasil',
-      'Saúde pública & parasitologia (doenças, vetores, prevenção)',
-      'Biotecnologia (vacinas, transgênicos, técnicas básicas)',
       'Histologia básica (tecidos – leitura de figura)',
       '🎲 Questões aleatórias'
-    ]
+    ],
+    uerj: ['Genética', 'Ecologia', 'Citologia', 'Fisiologia humana', 'Evolução', 'Biotecnologia', 'Botânica', '🎲 Questões aleatórias'],
+    fuvest: ['Genética', 'Ecologia', 'Citologia', 'Fisiologia humana', 'Evolução', 'Biotecnologia', 'Botânica', '🎲 Questões aleatórias'],
+    puc: ['Ecologia', 'Citologia', 'Genética', 'Fisiologia', 'Evolução', 'Botânica', 'Zoologia', 'Biomas do Brasil', 'Saúde pública & parasitologia', 'Biotecnologia', 'Histologia básica', '🎲 Questões aleatórias']
   },
-  por: {
-    enem: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Figuras de linguagem',
-      'Gramática contextual',
-      'Gêneros textuais',
-      'Obras obrigatórias da FUVEST',
-      'Modernismo e movimentos literários',
-      'Análise de estilo',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Gêneros textuais',
-      'Gramática',
-      'Literatura',
-      'Redação',
-      'Figuras de linguagem',
-      'Análise sintática',
-      'Variação linguística (registro, regionalismo, norma x uso)',
-      'Funções da linguagem e coerência/cohesão',
-      'Intertextualidade e semiótica (imagem, charge, HQ, infográfico)',
-      'Linguagem publicitária e multiletramentos',
-      '🎲 Questões aleatórias'
-    ]
+  fis: {
+    enem: ['Eletrodinâmica', 'Cinemática', 'Dinâmica', 'Termologia', 'Óptica', 'Hidrostática', 'Ondulatória', 'Trabalho, energia e potência', 'Impulso e quantidade de movimento', 'Termodinâmica', 'Eletromagnetismo/Indução', 'Gravitação', 'Hidrodinâmica', 'Física moderna', 'Eletricidade', 'Leis de Newton', '🎲 Questões aleatórias'],
+    uerj: ['Leis de Newton e dinâmica', 'Trabalho, energia e potência', 'Cinemática', 'Eletricidade', 'Termologia', 'Óptica', 'Ondulatória', '🎲 Questões aleatórias'],
+    fuvest: ['Leis de Newton e dinâmica', 'Trabalho, energia e potência', 'Cinemática', 'Eletricidade', 'Termologia', 'Óptica', 'Ondulatória', '🎲 Questões aleatórias'],
+    puc: ['Eletrodinâmica', 'Cinemática', 'Dinâmica', 'Termologia', 'Óptica', 'Hidrostática', 'Ondulatória', 'Trabalho, energia e potência', 'Impulso e quantidade de movimento', 'Termodinâmica', 'Eletromagnetismo/Indução', 'Gravitação', 'Hidrodinâmica', 'Física moderna', 'Eletricidade', 'Leis de Newton', '🎲 Questões aleatórias']
   },
-  ing: {
-    enem: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Vocabulário contextual',
-      'Gramática aplicada',
-      'Phrasal verbs',
-      'Expressões idiomáticas',
-      'Ideia principal e inferência',
-      'Falsos cognatos',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      'Leitura e interpretação (gêneros: notícia, anúncio, tirinha, infográfico)',
-      'Estratégias de leitura (skimming, scanning, cognatos/falsos cognatos)',
-      'Funções comunicativas (opinião, sugestão, pedido, concordância/discordância)',
-      'Coesão referencial (pronomes, referência/ellipsis)',
-      'Modal verbs, voz passiva, condicionais',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  esp: {
-    enem: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Interpretação de texto',
-      'Vocabulário',
-      'Gramática básica',
-      'Tempos verbais',
-      'Conectivos',
-      'Expressões idiomáticas',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  his: {
-    enem: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Brasil Colônia',
-      'Brasil Império',
-      'Era Vargas',
-      'Ditadura Militar',
-      'Guerras Mundiais',
-      'Revolução Industrial',
-      'Iluminismo',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Brasil República',
-      'Brasil Colônia',
-      'Brasil Império',
-      'História Geral',
-      'Idade Média',
-      'Idade Moderna',
-      'Idade Contemporânea',
-      'História da América (América Latina e EUA nas questões de contexto)',
-      'República Velha',
-      'Era Vargas',
-      'Populismo',
-      'Ditadura Civil-Militar',
-      'Redemocratização/Nova República',
-      'Cidadania e direitos',
-      'Patrimônio, memória e cultura (interpretação de fonte histórica)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  geo: {
-    enem: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Geopolítica mundial',
-      'Urbanização',
-      'Questões ambientais',
-      'Agricultura',
-      'Climatologia',
-      'Recursos naturais',
-      'Globalização',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Geopolítica',
-      'Meio ambiente',
-      'Cartografia',
-      'Demografia',
-      'Climatologia',
-      'Geografia do Brasil',
-      'Urbanização',
-      'Globalização, redes e fluxos (comércio, finanças, migração)',
-      'Economia do Brasil (agro, indústria, energia, transportes, logística)',
-      'Geotecnologias (GPS, SIG, imagens de satélite)',
-      'Questão agrária (estrutura fundiária, modernização)',
-      'Recursos hídricos/biomas',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  fil: {
-    enem: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Ética e moral',
-      'Política e poder',
-      'Filosofia moderna',
-      'Sociologia clássica',
-      'Cidadania e Estado',
-      'Cultura e ideologia',
-      'Alienação e trabalho',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Filosofia Antiga',
-      'Filosofia Medieval',
-      'Filosofia Moderna',
-      'Filosofia Contemporânea',
-      'Ética',
-      'Política',
-      'Estética',
-      'Teoria do conhecimento / Epistemologia',
-      'Lógica e argumentação (falácias, estrutura do argumento)',
-      'Filosofia da ciência (conceitos básicos)',
-      '🎲 Questões aleatórias'
-    ]
-  },
-  soc: {
-    enem: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    uerj: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    fuvest: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ],
-    puc: [
-      'Sociologia Clássica',
-      'Sociologia Contemporânea',
-      'Movimentos Sociais',
-      'Cultura',
-      'Estratificação Social',
-      'Globalização',
-      'Cidadania',
-      'Trabalho e economia (precarização, fordismo/toyotismo)',
-      'Instituições sociais (família, escola, Estado, mídia)',
-      'Gênero, raça e etnia (desigualdades e políticas públicas)',
-      'Urbanização, violência e cidade',
-      '🎲 Questões aleatórias'
-    ]
+  qui: {
+    enem: ['Química Orgânica', 'Físico-química', 'Química Geral', 'Química Ambiental', 'Eletroquímica', '🎲 Questões aleatórias'],
+    uerj: ['Química Orgânica', 'Físico-química', 'Química Geral', 'Eletroquímica', '🎲 Questões aleatórias'],
+    fuvest: ['Química Orgânica', 'Físico-química', 'Química Geral', 'Eletroquímica', '🎲 Questões aleatórias'],
+    puc: ['Química Orgânica', 'Físico-química', 'Química Geral', 'Química Ambiental', 'Eletroquímica', '🎲 Questões aleatórias']
   }
 };
-
-// Questões de Brasil República
-const BRASIL_REPUBLICA_QUESTIONS = [
-  {
-    id: 1,
-    title: "ENEM 2016 — Coronelismo e barganhas políticas",
-    text: "No início da República, consolidou-se um arranjo político em que chefes locais controlavam votos e cargos públicos, enquanto o governo garantia benefícios e reconhecia sua influência. Esse mecanismo, conhecido como coronelismo, revelava",
-    alternatives: [
-      "A) fortalecimento dos partidos de massa.",
-      "B) autonomia municipal sem interferência estadual.",
-      "C) troca de favores entre o poder central e lideranças locais para garantir apoio eleitoral.",
-      "D) supremacia do Judiciário sobre os demais poderes.",
-      "E) participação popular direta nas decisões nacionais."
-    ],
-    correct: "C",
-    explanation: "A descrição corresponde ao coronelismo analisado por Victor Nunes Leal: um sistema nacional de barganhas entre governo e \"coronéis\", com controle do voto e distribuição de cargos e recursos. Não há participação popular ampliada; há clientelismo e coerção eleitoral."
-  },
-  {
-    id: 2,
-    title: "ENEM 2014 — \"Política dos Governadores\"",
-    text: "Declaração de Campos Sales defendia que \"dos estados se governa a República\", indicando um pacto que assegurava maiorias no Congresso por meio do alinhamento entre presidentes de estado (governadores) e o Executivo federal. Tal prática ficou conhecida como",
-    alternatives: [
-      "A) voto distrital.",
-      "B) federalismo autoritário.",
-      "C) política dos governadores, com controle de máquinas eleitorais e apoio recíproco.",
-      "D) parlamentarismo de coalizão.",
-      "E) moralização administrativa."
-    ],
-    correct: "C",
-    explanation: "O texto remete ao arranjo da Primeira República: o governo federal sustentava-se com apoio dos estados dominantes, que, por sua vez, controlavam eleições e bancadas, garantindo estabilidade ao regime. A chave é o alinhamento vertical e o uso das máquinas eleitorais."
-  },
-  {
-    id: 3,
-    title: "ENEM 2019 — Revolta da Vacina (1904) e ação popular",
-    text: "Texto de José Murilo de Carvalho caracteriza a Revolta da Vacina como mobilização defensiva e fragmentada, em que os participantes defendiam direitos percebidos como violados pela intervenção estatal. Essa leitura destaca que a reação popular",
-    alternatives: [
-      "A) buscava implantar um governo revolucionário.",
-      "B) exigia a suspensão de todas as políticas sanitárias.",
-      "C) contestava a forma autoritária de implementação das medidas de saúde, mais do que o Estado em si.",
-      "D) pretendia restaurar a monarquia no Brasil.",
-      "E) reivindicava participação direta em conselhos de saúde."
-    ],
-    correct: "C",
-    explanation: "A revolta não negava o Estado; questionava a imposição coercitiva da vacinação e a violência das reformas urbanas, revelando limites da cidadania na Primeira República e tensões entre autoridade sanitária e direitos urbanos."
-  },
-  {
-    id: 4,
-    title: "ENEM 2022 — Era Vargas e o DIP",
-    text: "Um decreto de 1937 criou o Departamento de Imprensa e Propaganda (DIP), diretamente subordinado à Presidência, com atribuições de \"coordenar\" relações da imprensa com o governo. Essa medida visava, sobretudo,",
-    alternatives: [
-      "A) assegurar pluralidade informativa por meio de conselhos autônomos.",
-      "B) impedir qualquer manifestação cultural de cunho nacionalista.",
-      "C) organizar a propaganda oficial e controlar a circulação de informações, fortalecendo o Estado Novo.",
-      "D) transferir a censura ao Poder Judiciário.",
-      "E) descentralizar a comunicação em favor dos estados."
-    ],
-    correct: "C",
-    explanation: "O DIP articulou propaganda estatal e censura para construir legitimidade do regime e vigiar opositores, típica prática autoritária do Estado Novo (1937–1945)."
-  },
-  {
-    id: 5,
-    title: "ENEM 2020 (Digital) — Tenentismo e crise da República Velha",
-    text: "Texto sobre o tenentismo afirma que jovens oficiais ocuparam o vazio deixado por lideranças civis, tornando-se foco de oposição às \"caducas\" instituições da República Velha (ex.: 18 do Forte; Coluna Prestes). O movimento expressava",
-    alternatives: [
-      "A) defesa do voto universal e do socialismo no Exército.",
-      "B) projeto regionalista de restauração monárquica.",
-      "C) crítica à fraude eleitoral e ao mando oligárquico, propondo reformas centralizadoras e moralização da política.",
-      "D) recuo do Estado e autonomia municipal ampla.",
-      "E) adesão à política do \"café com leite\"."
-    ],
-    correct: "C",
-    explanation: "As rebeliões tenentistas atacaram fraudes eleitorais, o coronelismo e a fragmentação federativa; defendiam centralização e \"saneamento\" da vida pública, ecoando a crise do pacto oligárquico que ruiu em 1930."
-  }
-];
-
-// Questões de Geografia - QUESTÃO ATUALIZADA
-const GEOGRAFIA_QUESTIONS = [
-  {
-    id: 1,
-    title: "ENEM 2023 — Estrutura Fundiária Brasileira",
-    text: "O gráfico representa a relação entre o tamanho e a totalidade dos imóveis rurais no Brasil. Que característica da estrutura fundiária brasileira está evidenciada no gráfico apresentado?",
-    image: "https://k6hrqrxuu8obbfwn.public.blob.vercel-storage.com/temp/367ddac2-2a08-4c30-b6b1-61b7813dc077.jpg",
-    alternatives: [
-      "A) A concentração de terras nas mãos de poucos.",
-      "B) A existência de poucas terras agricultáveis.",
-      "C) O domínio territorial dos minifúndios.",
-      "D) A primazia da agricultura familiar.",
-      "E) A debilidade dos plantations modernos."
-    ],
-    correct: "A",
-    explanation: "O gráfico evidencia a concentração fundiária no Brasil, característica histórica da estrutura agrária brasileira. Poucos proprietários detêm grandes extensões de terra, enquanto muitos pequenos proprietários possuem áreas reduzidas, demonstrando a desigualdade na distribuição de terras no país."
-  }
-];
-
-// Questões de Matemática - Estatística
-const MATEMATICA_ESTATISTICA_QUESTIONS = [
-  {
-    id: 1,
-    title: "ENEM — Pesquisa Nacional por Amostra de Domicílios",
-    text: "Os dados do gráfico foram coletados por meio da Pesquisa Nacional por Amostra de Domicílios.",
-    image: "https://k6hrqrxuu8obbfwn.public.blob.vercel-storage.com/temp/09202af8-0e9a-491e-9d74-69cfd1c3d48c.jpg",
-    question: "Supondo-se que, no Sudeste, 14 900 estudantes foram entrevistados nessa pesquisa, quantos deles possuíam telefone móvel celular?",
-    alternatives: [
-      "A) 6553",
-      "B) 6 556", 
-      "C) 7450",
-      "D) 8344",
-      "E) 9 536"
-    ],
-    correct: "D",
-    explanation: "Para resolver esta questão, é necessário analisar o gráfico que mostra a porcentagem de estudantes que possuem telefone móvel celular na região Sudeste. Com base nos dados apresentados no gráfico, aplicando a porcentagem sobre o total de 14.900 estudantes entrevistados, chegamos ao resultado de 8.344 estudantes."
-  }
-];
-
-// Questões do ENEM 2024
-const QUESTIONS_2024 = [
-  {
-    id: 1,
-    number: "QUESTÃO 01",
-    subject: "Português",
-    text: "A linguagem é um fenômeno social que se manifesta através de diferentes variedades linguísticas. Essas variedades refletem aspectos culturais, regionais e sociais dos falantes.",
-    alternatives: [
-      "A) A linguagem padrão é a única forma correta de comunicação.",
-      "B) As variedades linguísticas são desvios da norma culta.",
-      "C) A diversidade linguística enriquece a cultura de um povo.",
-      "D) Apenas a linguagem formal deve ser ensinada nas escolas.",
-      "E) As gírias não fazem parte do sistema linguístico."
-    ],
-    correct: "C"
-  },
-  {
-    id: 2,
-    number: "QUESTÃO 02",
-    subject: "Matemática",
-    text: "Em uma pesquisa sobre preferências musicais, foram entrevistadas 200 pessoas. Os resultados mostraram que 120 pessoas gostam de rock, 80 gostam de pop e 40 gostam de ambos os estilos. Quantas pessoas não gostam de nenhum dos dois estilos?",
-    alternatives: [
-      "A) 20 pessoas",
-      "B) 40 pessoas", 
-      "C) 60 pessoas",
-      "D) 80 pessoas",
-      "E) 100 pessoas"
-    ],
-    correct: "B"
-  },
-  {
-    id: 3,
-    number: "QUESTÃO 03",
-    subject: "História",
-    text: "O período conhecido como Era Vargas (1930-1945) foi marcado por transformações significativas na sociedade brasileira, incluindo a consolidação de direitos trabalhistas e a modernização do Estado.",
-    alternatives: [
-      "A) Vargas implementou apenas políticas liberais.",
-      "B) O Estado Novo foi um período de plena democracia.",
-      "C) A CLT foi criada durante o governo Vargas.",
-      "D) Não houve censura durante a Era Vargas.",
-      "E) O Brasil não participou da Segunda Guerra Mundial."
-    ],
-    correct: "C"
-  },
-  {
-    id: 4,
-    number: "QUESTÃO 04",
-    subject: "Biologia",
-    text: "A fotossíntese é um processo fundamental para a vida na Terra, no qual as plantas convertem energia luminosa em energia química. Este processo ocorre principalmente nos cloroplastos das células vegetais.",
-    alternatives: [
-      "A) A fotossíntese ocorre apenas durante a noite.",
-      "B) O oxigênio é um reagente da fotossíntese.",
-      "C) A clorofila é essencial para capturar a luz solar.",
-      "D) A fotossíntese não produz glicose.",
-      "E) Apenas as raízes realizam fotossíntese."
-    ],
-    correct: "C"
-  },
-  {
-    id: 5,
-    number: "QUESTÃO 05",
-    subject: "Geografia",
-    text: "O aquecimento global é um fenômeno climático caracterizado pelo aumento da temperatura média da Terra, causado principalmente pela intensificação do efeito estufa devido às atividades humanas.",
-    alternatives: [
-      "A) O efeito estufa é exclusivamente prejudicial.",
-      "B) As atividades humanas não influenciam o clima.",
-      "C) O CO₂ é o único gás do efeito estufa.",
-      "D) O desmatamento contribui para o aquecimento global.",
-      "E) O aquecimento global afeta apenas os polos."
-    ],
-    correct: "D"
-  },
-  {
-    id: 6,
-    number: "QUESTÃO 06",
-    subject: "Física",
-    text: "Um objeto é lançado verticalmente para cima com velocidade inicial de 20 m/s. Considerando g = 10 m/s² e desprezando a resistência do ar, qual será a altura máxima atingida pelo objeto?",
-    alternatives: [
-      "A) 10 metros",
-      "B) 15 metros",
-      "C) 20 metros",
-      "D) 25 metros",
-      "E) 30 metros"
-    ],
-    correct: "C"
-  },
-  {
-    id: 7,
-    number: "QUESTÃO 07",
-    subject: "Química",
-    text: "A água é uma substância essencial para a vida, apresentando propriedades únicas como alto ponto de ebulição, capacidade de formar pontes de hidrogênio e ser um excelente solvente polar.",
-    alternatives: [
-      "A) A água é uma molécula apolar.",
-      "B) As pontes de hidrogênio não existem na água.",
-      "C) A água dissolve melhor substâncias polares.",
-      "D) O ponto de ebulição da água é baixo.",
-      "E) A água não pode formar ligações intermoleculares."
-    ],
-    correct: "C"
-  },
-  {
-    id: 8,
-    number: "QUESTÃO 08",
-    subject: "Filosofia",
-    text: "Sócrates, considerado um dos fundadores da filosofia ocidental, desenvolveu o método maiêutico, que consiste em fazer perguntas para levar o interlocutor ao conhecimento através da reflexão.",
-    alternatives: [
-      "A) Sócrates escreveu muitas obras filosóficas.",
-      "B) O método socrático baseia-se em dar respostas prontas.",
-      "C) 'Só sei que nada sei' é uma frase atribuída a Sócrates.",
-      "D) Sócrates não acreditava no autoconhecimento.",
-      "E) A maiêutica é um método de ensino autoritário."
-    ],
-    correct: "C"
-  },
-  {
-    id: 9,
-    number: "QUESTÃO 09",
-    subject: "Sociologia",
-    text: "A globalização é um processo de integração mundial que afeta aspectos econômicos, culturais, políticos e sociais, promovendo maior interconexão entre os países e povos.",
-    alternatives: [
-      "A) A globalização afeta apenas a economia.",
-      "B) A tecnologia não influencia a globalização.",
-      "C) A globalização promove homogeneização cultural.",
-      "D) Apenas países desenvolvidos participam da globalização.",
-      "E) A globalização não tem aspectos negativos."
-    ],
-    correct: "C"
-  },
-  {
-    id: 10,
-    number: "QUESTÃO 10",
-    subject: "Inglês",
-    text: "Technology has revolutionized the way we communicate, work, and learn. Social media platforms have connected people across the globe, creating new opportunities for collaboration and cultural exchange.",
-    question: "According to the text, technology has:",
-    alternatives: [
-      "A) Limited global communication",
-      "B) Reduced cultural exchange",
-      "C) Created new collaboration opportunities",
-      "D) Decreased learning possibilities",
-      "E) Isolated people from each other"
-    ],
-    correct: "C"
-  }
-];
 
 // Anos disponíveis
 const YEARS = Array.from({ length: 16 }, (_, i) => 2024 - i);
 
-// Componente de Questão Interativa
-function QuestionCard({ question, onNext }: { question: any; onNext: () => void }) {
+// Função auxiliar para renderizar texto com imagem posicionada
+function renderQuestionText(question: QuizQuestion) {
+  if (!question.image || !question.imageAfterText) {
+    return (
+      <>
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+          {question.text}
+        </p>
+        {question.image && (
+          <div className="mt-6">
+            <img 
+              src={question.image} 
+              alt="Imagem da questão" 
+              className="w-full h-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-md"
+            />
+          </div>
+        )}
+      </>
+    );
+  }
+
+  // Dividir texto e inserir imagem no meio
+  const parts = question.text.split(question.imageAfterText);
+  
+  return (
+    <>
+      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+        {parts[0]}{question.imageAfterText}
+      </p>
+      <div className="my-6">
+        <img 
+          src={question.image} 
+          alt="Imagem da questão" 
+          className="w-full h-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-md"
+        />
+      </div>
+      {parts[1] && (
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+          {parts[1]}
+        </p>
+      )}
+    </>
+  );
+}
+
+// Componente de Questão para Modo Quiz (Prova por Ano)
+function QuizQuestionCard({ 
+  question, 
+  onAnswer,
+  selectedAnswer
+}: { 
+  question: QuizQuestion; 
+  onAnswer: (answer: string) => void;
+  selectedAnswer: string | null;
+}) {
+  const getOptionLetter = (index: number) => String.fromCharCode(65 + index);
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+      {/* Cabeçalho da questão */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+            <span className="text-lg font-bold text-white">{question.id}</span>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            Questão {question.id}
+          </h3>
+        </div>
+        {renderQuestionText(question)}
+      </div>
+
+      {/* Alternativas */}
+      <div className="space-y-3">
+        {question.alternatives.map((alternative, index) => {
+          const letter = getOptionLetter(index);
+          const isSelected = selectedAnswer === letter;
+          
+          return (
+            <button
+              key={index}
+              onClick={() => onAnswer(letter)}
+              className={`w-full p-4 rounded-xl border-2 text-left transition-all duration-200 ${
+                isSelected
+                  ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-500 text-blue-800 dark:text-blue-200'
+                  : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                  isSelected 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                }`}>
+                  {letter}
+                </div>
+                <span className="flex-1">
+                  {alternative.replace(/^[A-E]\)\s*/, '')}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Componente de Questão para Estudo por Matéria (com gabarito imediato)
+function StudyQuestionCard({ question }: { question: QuizQuestion }) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleVerify = () => {
     if (selectedAnswer) {
       setShowResult(true);
-      setShowExplanation(true);
     }
-  };
-
-  const handleNext = () => {
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setShowExplanation(false);
-    onNext();
   };
 
   const getOptionLetter = (index: number) => String.fromCharCode(65 + index);
@@ -973,37 +541,20 @@ function QuestionCard({ question, onNext }: { question: any; onNext: () => void 
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
       {/* Cabeçalho da questão */}
       <div className="mb-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-          {question.title}
-        </h3>
-        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-          {question.text}
-        </p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+            <span className="text-lg font-bold text-white">{question.id}</span>
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            Questão {question.id}
+          </h3>
+        </div>
+        {renderQuestionText(question)}
       </div>
-
-      {/* Imagem do gráfico se existir */}
-      {question.image && (
-        <div className="mb-6">
-          <img 
-            src={question.image} 
-            alt="Gráfico de dados para análise" 
-            className="w-full h-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-md"
-          />
-        </div>
-      )}
-
-      {/* Pergunta adicional se existir */}
-      {question.question && (
-        <div className="mb-6">
-          <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">
-            {question.question}
-          </p>
-        </div>
-      )}
 
       {/* Alternativas */}
       <div className="space-y-3 mb-6">
-        {question.alternatives.map((alternative: string, index: number) => {
+        {question.alternatives.map((alternative, index) => {
           const letter = getOptionLetter(index);
           const isSelected = selectedAnswer === letter;
           const isCorrect = letter === question.correct;
@@ -1060,20 +611,17 @@ function QuestionCard({ question, onNext }: { question: any; onNext: () => void 
         })}
       </div>
 
-      {/* Gabarito */}
+      {/* Gabarito (aparece imediatamente no modo Estudo) */}
       {showResult && (
         <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
           <h4 className="font-bold text-green-800 dark:text-green-200 mb-2">
             ✅ Gabarito: Letra {question.correct}
           </h4>
-          <p className="text-green-700 dark:text-green-300 text-sm">
-            A resposta correta é a alternativa {question.correct}.
-          </p>
         </div>
       )}
 
-      {/* Explicação */}
-      {showExplanation && question.explanation && (
+      {/* Resolução (aparece imediatamente no modo Estudo) */}
+      {showResult && (
         <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
           <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-2">Resolução:</h4>
           <p className="text-blue-700 dark:text-blue-300 text-sm leading-relaxed">
@@ -1082,30 +630,20 @@ function QuestionCard({ question, onNext }: { question: any; onNext: () => void 
         </div>
       )}
 
-      {/* Botões de ação */}
-      <div className="flex justify-between">
-        <div></div>
-        {!showResult ? (
-          <button
-            onClick={handleVerify}
-            disabled={!selectedAnswer}
-            className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-              selectedAnswer
-                ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            Verificar
-          </button>
-        ) : (
-          <button
-            onClick={handleNext}
-            className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-medium transition-all duration-200"
-          >
-            Próxima Questão
-          </button>
-        )}
-      </div>
+      {/* Botão de verificar */}
+      {!showResult && (
+        <button
+          onClick={handleVerify}
+          disabled={!selectedAnswer}
+          className={`w-full px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+            selectedAnswer
+              ? 'bg-blue-500 hover:bg-blue-600 text-white'
+              : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          Verificar Resposta
+        </button>
+      )}
     </div>
   );
 }
@@ -1116,9 +654,13 @@ export default function SuperAppVestibulares() {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedPhase, setSelectedPhase] = useState<number | null>(null);
   const [activeTopicTab, setActiveTopicTab] = useState<TopicTab>('assuntos');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [randomQuestions, setRandomQuestions] = useState<any[]>([]);
+  
+  // Estados para o modo Quiz (Prova por Ano)
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, string>>({});
 
   // Função para voltar
   const goBack = () => {
@@ -1135,9 +677,27 @@ export default function SuperAppVestibulares() {
       setCurrentScreen('topics');
       setSelectedTopic(null);
       setCurrentQuestionIndex(0);
-    } else if (currentScreen === 'year-questions') {
+    } else if (currentScreen === 'year-day-selection' || currentScreen === 'year-phase-selection') {
       setCurrentScreen('years');
       setSelectedYear(null);
+      setSelectedDay(null);
+      setSelectedPhase(null);
+    } else if (currentScreen === 'quiz-mode') {
+      if (selectedExam === 'enem') {
+        setCurrentScreen('year-day-selection');
+        setSelectedDay(null);
+      } else if (selectedExam === 'fuvest') {
+        setCurrentScreen('year-phase-selection');
+        setSelectedPhase(null);
+      } else {
+        setCurrentScreen('years');
+        setSelectedYear(null);
+      }
+      setQuizAnswers({});
+      setCurrentQuestionIndex(0);
+    } else if (currentScreen === 'quiz-results') {
+      setCurrentScreen('quiz-mode');
+      setCurrentQuestionIndex(0);
     }
   };
 
@@ -1164,40 +724,28 @@ export default function SuperAppVestibulares() {
   // Função para selecionar ano
   const selectYear = (year: number) => {
     setSelectedYear(year);
-    setCurrentScreen('year-questions');
-  };
-
-  // Função para navegar para fotos
-  const goToPhotos = () => {
-    setCurrentScreen('photos');
-    setActiveTopicTab('fotos');
-  };
-
-  // Função para navegar para questões aleatórias
-  const goToRandomQuestions = () => {
-    if (selectedSubject === 'geo') {
-      // Para Geografia, usar as questões específicas
-      const shuffled = [...GEOGRAFIA_QUESTIONS].sort(() => Math.random() - 0.5);
-      setRandomQuestions(shuffled);
-    } else if (selectedSubject === 'his') {
-      // Para História, usar as questões de Brasil República
-      const shuffled = [...BRASIL_REPUBLICA_QUESTIONS].sort(() => Math.random() - 0.5);
-      setRandomQuestions(shuffled);
-    } else if (selectedSubject === 'mat') {
-      // Para Matemática, usar as questões de estatística
-      const shuffled = [...MATEMATICA_ESTATISTICA_QUESTIONS].sort(() => Math.random() - 0.5);
-      setRandomQuestions(shuffled);
+    
+    if (selectedExam === 'enem') {
+      setCurrentScreen('year-day-selection');
+    } else if (selectedExam === 'fuvest') {
+      setCurrentScreen('year-phase-selection');
     } else {
-      setRandomQuestions([]);
+      setCurrentScreen('year-questions');
     }
-    setCurrentQuestionIndex(0);
-    setCurrentScreen('random-questions');
-    setActiveTopicTab('aleatorio');
   };
 
-  // Função para próxima questão
-  const nextQuestion = () => {
-    setCurrentQuestionIndex(prev => prev + 1);
+  // Função para selecionar dia (ENEM)
+  const selectDay = (day: number) => {
+    setSelectedDay(day);
+    setCurrentScreen('quiz-mode');
+    setQuizAnswers({});
+    setCurrentQuestionIndex(0);
+  };
+
+  // Função para selecionar fase (FUVEST)
+  const selectPhase = (phase: number) => {
+    setSelectedPhase(phase);
+    setCurrentScreen('year-questions');
   };
 
   // Obter dados do vestibular selecionado
@@ -1205,7 +753,7 @@ export default function SuperAppVestibulares() {
   const selectedSubjectData = selectedExam && selectedSubject ? 
     SUBJECTS_BY_EXAM[selectedExam].find(s => s.id === selectedSubject) : null;
 
-  // Obter tópicos da matéria selecionada para o vestibular selecionado
+  // Obter tópicos da matéria selecionada
   const getTopicsForSubject = () => {
     if (!selectedSubject || !selectedExam) return [];
     const subjectTopics = TOPICS_BY_SUBJECT[selectedSubject];
@@ -1213,12 +761,11 @@ export default function SuperAppVestibulares() {
     return subjectTopics[selectedExam] || [];
   };
 
-  // Tela inicial - 4 botões dos vestibulares
+  // Tela inicial
   if (currentScreen === 'home') {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
@@ -1233,19 +780,12 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Botões dos vestibulares */}
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
             {EXAMS.map((exam) => (
               <button
                 key={exam.id}
                 onClick={() => selectExam(exam.id)}
-                className={`
-                  relative overflow-hidden rounded-2xl p-8 h-32 
-                  bg-gradient-to-br ${exam.color}
-                  text-white shadow-lg hover:shadow-xl
-                  transform hover:scale-105 transition-all duration-300
-                  cursor-pointer group w-full
-                `}
+                className={`relative overflow-hidden rounded-2xl p-8 h-32 bg-gradient-to-br ${exam.color} text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 cursor-pointer group w-full`}
               >
                 <div className="flex items-center justify-between h-full">
                   <div className="flex-1 text-left">
@@ -1259,7 +799,6 @@ export default function SuperAppVestibulares() {
                     {exam.icon}
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
             ))}
           </div>
@@ -1273,12 +812,8 @@ export default function SuperAppVestibulares() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
           <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Voltar</span>
             </button>
@@ -1294,7 +829,6 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Dois botões de modo */}
           <div className="max-w-2xl mx-auto grid gap-6">
             <button
               onClick={() => setCurrentScreen('subjects')}
@@ -1352,12 +886,8 @@ export default function SuperAppVestibulares() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
           <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Voltar</span>
             </button>
@@ -1373,7 +903,6 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Grid de matérias */}
           <div className="max-w-4xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {subjects.map((subject) => (
               <button
@@ -1401,19 +930,15 @@ export default function SuperAppVestibulares() {
     );
   }
 
-  // Tela de assuntos que mais caem com abas
+  // Tela de assuntos
   if (currentScreen === 'topics' && selectedExamData && selectedSubjectData && selectedSubject) {
     const topics = getTopicsForSubject();
     
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
           <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Voltar</span>
             </button>
@@ -1431,159 +956,47 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Abas de navegação - apenas Assuntos e Fotos */}
-          <div className="max-w-3xl mx-auto mb-8">
-            <div className="flex bg-white dark:bg-gray-800 rounded-2xl p-2 border border-gray-200 dark:border-gray-700">
-              <button
-                onClick={() => setActiveTopicTab('assuntos')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
-                  activeTopicTab === 'assuntos'
-                    ? 'bg-blue-500 text-white shadow-md'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>Assuntos</span>
-              </button>
-              <button
-                onClick={() => {
-                  setActiveTopicTab('fotos');
-                  goToPhotos();
-                }}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
-                  activeTopicTab === 'fotos'
-                    ? 'bg-blue-500 text-white shadow-md'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                <Camera className="w-4 h-4" />
-                <span>Fotos</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Conteúdo da aba Assuntos */}
-          {activeTopicTab === 'assuntos' && (
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Assuntos que mais caem no {selectedExamData.name}
-                </h2>
-              </div>
-              <div className="space-y-4">
-                {topics.map((topic, index) => {
-                  // Verificar se é o botão de questões aleatórias
-                  const isRandomButton = topic === '🎲 Questões aleatórias';
-                  
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        if (isRandomButton) {
-                          setActiveTopicTab('aleatorio');
-                          goToRandomQuestions();
-                        } else {
-                          selectTopic(topic);
-                        }
-                      }}
-                      className="w-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
-                            {isRandomButton ? (
-                              <Shuffle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            ) : (
-                              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                                {index + 1}
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-left">
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                              {topic}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">
-                              {isRandomButton ? 'Pratique com questões randômicas' : 'Clique para ver as questões'}
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de Fotos
-  if (currentScreen === 'photos' && selectedExamData && selectedSubjectData) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-          </div>
-
-          <div className="text-center mb-8">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {selectedSubjectData.name} - Fotos
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name}
-            </p>
-          </div>
-
-          {/* Abas de navegação */}
-          <div className="max-w-3xl mx-auto mb-8">
-            <div className="flex bg-white dark:bg-gray-800 rounded-2xl p-2 border border-gray-200 dark:border-gray-700">
-              <button
-                onClick={() => {
-                  setActiveTopicTab('assuntos');
-                  setCurrentScreen('topics');
-                }}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-200 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>Assuntos</span>
-              </button>
-              <button
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-200 bg-blue-500 text-white shadow-md"
-              >
-                <Camera className="w-4 h-4" />
-                <span>Fotos</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Conteúdo da seção Fotos */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 text-center">
-              <div className="text-6xl mb-6">📸</div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Fotos e Imagens
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                Assuntos que mais caem no {selectedExamData.name}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Aqui você encontrará fotos, gráficos, tabelas e imagens relacionadas a <strong>{selectedSubjectData.name}</strong>.
-              </p>
-              <p className="text-gray-500 dark:text-gray-500 text-sm mt-4">
-                Conteúdo visual em desenvolvimento para o {selectedExamData.name}!
-              </p>
+            </div>
+            <div className="space-y-4">
+              {topics.map((topic, index) => {
+                const isRandomButton = topic === '🎲 Questões aleatórias';
+                
+                return (
+                  <button
+                    key={index}
+                    onClick={() => selectTopic(topic)}
+                    className="w-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+                          {isRandomButton ? (
+                            <Shuffle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          ) : (
+                            <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                              {index + 1}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-left">
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                            {topic}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">
+                            {isRandomButton ? 'Pratique com questões randômicas' : 'Clique para ver as questões'}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors" />
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -1591,225 +1004,65 @@ export default function SuperAppVestibulares() {
     );
   }
 
-  // Tela de Questões Aleatórias
-  if (currentScreen === 'random-questions' && selectedExamData && selectedSubjectData) {
-    if ((selectedSubject === 'his' || selectedSubject === 'geo' || selectedSubject === 'mat') && randomQuestions.length > 0) {
-      const currentQuestion = randomQuestions[currentQuestionIndex];
-      const isLastQuestion = currentQuestionIndex >= randomQuestions.length - 1;
+  // Tela de questões (Estudo por Matéria)
+  if (currentScreen === 'questions' && selectedTopic && selectedSubjectData && selectedExamData) {
+    // Filtrar questões por matéria e assunto
+    const filteredQuestions = ENEM_2009_DIA1_QUESTIONS.filter(q => 
+      q.subject === selectedSubject && q.topic === selectedTopic
+    );
 
+    if (filteredQuestions.length === 0) {
       return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4 py-8">
-            {/* Header com botão voltar */}
-            <div className="flex items-center justify-between mb-8">
-              <button
-                onClick={goBack}
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
+            <div className="flex items-center mb-8">
+              <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Voltar</span>
               </button>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Questão {currentQuestionIndex + 1} de {randomQuestions.length}
-              </div>
             </div>
 
-            <div className="text-center mb-8">
+            <div className="text-center mb-12">
               <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
                 <span className="text-3xl">{selectedSubjectData.icon}</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {selectedSubject === 'geo' ? 'Geografia - Questões Aleatórias' : 
-                 selectedSubject === 'mat' ? 'Matemática - Estatística' : 
-                 'Brasil República - Questões Aleatórias'}
+                {selectedTopic}
               </h1>
               <p className="text-gray-600 dark:text-gray-400 text-lg">
-                {selectedExamData.name}
+                {selectedExamData.name} - {selectedSubjectData.name}
               </p>
             </div>
 
-            {/* Questão atual */}
-            <div className="max-w-4xl mx-auto">
-              <QuestionCard 
-                question={currentQuestion}
-                onNext={isLastQuestion ? () => {
-                  // Reiniciar ou voltar
-                  if (selectedSubject === 'geo') {
-                    const shuffled = [...GEOGRAFIA_QUESTIONS].sort(() => Math.random() - 0.5);
-                    setRandomQuestions(shuffled);
-                  } else if (selectedSubject === 'mat') {
-                    const shuffled = [...MATEMATICA_ESTATISTICA_QUESTIONS].sort(() => Math.random() - 0.5);
-                    setRandomQuestions(shuffled);
-                  } else {
-                    const shuffled = [...BRASIL_REPUBLICA_QUESTIONS].sort(() => Math.random() - 0.5);
-                    setRandomQuestions(shuffled);
-                  }
-                  setCurrentQuestionIndex(0);
-                } : nextQuestion}
-              />
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 text-center">
+                <div className="text-6xl mb-6">📝</div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                  Questões em Desenvolvimento
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 text-lg">
+                  Aqui vão aparecer as questões de <strong>{selectedTopic}</strong>.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       );
     }
 
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-          </div>
-
-          <div className="text-center mb-8">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {selectedSubjectData.name} - Questões Aleatórias
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name}
-            </p>
-          </div>
-
-          {/* Conteúdo da seção Questões Aleatórias */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 text-center">
-              <div className="text-6xl mb-6">🎲</div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Questões Aleatórias
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Pratique com questões aleatórias de <strong>{selectedSubjectData.name}</strong> do {selectedExamData.name}.
-              </p>
-              <p className="text-gray-500 dark:text-gray-500 text-sm mt-4">
-                Sistema de questões aleatórias em desenvolvimento para outras matérias!
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de questões (Matemática - Estatística)
-  if (currentScreen === 'questions' && selectedSubject === 'mat' && selectedTopic === 'Estatística (média, gráficos e tabelas)' && selectedSubjectData && selectedExamData) {
-    const currentQuestion = MATEMATICA_ESTATISTICA_QUESTIONS[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex >= MATEMATICA_ESTATISTICA_QUESTIONS.length - 1;
+    const currentQuestion = filteredQuestions[currentQuestionIndex];
+    const isLastQuestion = currentQuestionIndex >= filteredQuestions.length - 1;
 
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
           <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Voltar</span>
             </button>
             <div className="text-sm text-gray-600 dark:text-gray-400">
-              Questão {currentQuestionIndex + 1} de {MATEMATICA_ESTATISTICA_QUESTIONS.length}
-            </div>
-          </div>
-
-          <div className="text-center mb-12">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Estatística (média, gráficos e tabelas)
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name} - {selectedSubjectData.name}
-            </p>
-          </div>
-
-          {/* Questão atual */}
-          <div className="max-w-4xl mx-auto">
-            <QuestionCard 
-              question={currentQuestion}
-              onNext={isLastQuestion ? () => setCurrentQuestionIndex(0) : nextQuestion}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de questões (Geografia)
-  if (currentScreen === 'questions' && selectedSubject === 'geo' && selectedSubjectData && selectedExamData) {
-    const currentQuestion = GEOGRAFIA_QUESTIONS[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex >= GEOGRAFIA_QUESTIONS.length - 1;
-
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Questão {currentQuestionIndex + 1} de {GEOGRAFIA_QUESTIONS.length}
-            </div>
-          </div>
-
-          <div className="text-center mb-12">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {selectedTopic || 'Geografia'}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name} - {selectedSubjectData.name}
-            </p>
-          </div>
-
-          {/* Questão atual */}
-          <div className="max-w-4xl mx-auto">
-            <QuestionCard 
-              question={currentQuestion}
-              onNext={isLastQuestion ? () => setCurrentQuestionIndex(0) : nextQuestion}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de questões (Brasil República)
-  if (currentScreen === 'questions' && selectedTopic === 'Brasil República' && selectedSubjectData && selectedExamData) {
-    const currentQuestion = BRASIL_REPUBLICA_QUESTIONS[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex >= BRASIL_REPUBLICA_QUESTIONS.length - 1;
-
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Questão {currentQuestionIndex + 1} de {BRASIL_REPUBLICA_QUESTIONS.length}
+              Questão {currentQuestionIndex + 1} de {filteredQuestions.length}
             </div>
           </div>
 
@@ -1825,59 +1078,19 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Questão atual */}
           <div className="max-w-4xl mx-auto">
-            <QuestionCard 
-              question={currentQuestion}
-              onNext={isLastQuestion ? () => setCurrentQuestionIndex(0) : nextQuestion}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Tela de questões (placeholder para outros assuntos)
-  if (currentScreen === 'questions' && selectedTopic && selectedSubjectData && selectedExamData) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
-          <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Voltar</span>
-            </button>
-          </div>
-
-          <div className="text-center mb-12">
-            <div className={`w-20 h-20 ${selectedSubjectData.color} rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-              <span className="text-3xl">{selectedSubjectData.icon}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {selectedTopic}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {selectedExamData.name} - {selectedSubjectData.name}
-            </p>
-          </div>
-
-          {/* Placeholder para questões */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 text-center">
-              <div className="text-6xl mb-6">📝</div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Questões em Desenvolvimento
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Aqui vão aparecer as questões de <strong>{selectedTopic}</strong>.
-              </p>
-              <p className="text-gray-500 dark:text-gray-500 text-sm mt-4">
-                Em breve você poderá praticar com questões reais do {selectedExamData.name}!
-              </p>
+            <StudyQuestionCard question={currentQuestion} />
+            
+            {/* Botão de próxima questão */}
+            <div className="mt-6 flex justify-end">
+              {!isLastQuestion && (
+                <button
+                  onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
+                  className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all duration-200"
+                >
+                  Próxima Questão
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -1890,12 +1103,8 @@ export default function SuperAppVestibulares() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
-          {/* Header com botão voltar */}
           <div className="flex items-center mb-8">
-            <button
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Voltar</span>
             </button>
@@ -1911,7 +1120,6 @@ export default function SuperAppVestibulares() {
             </p>
           </div>
 
-          {/* Grid de anos */}
           <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {YEARS.map((year) => (
               <button
@@ -1936,158 +1144,343 @@ export default function SuperAppVestibulares() {
     );
   }
 
-  // Tela de questões por ano (2024 com questões reais)
-  if (currentScreen === 'year-questions' && selectedExamData && selectedYear) {
-    // Mostrar questões apenas para 2024
-    if (selectedYear === 2024) {
-      return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4 py-8">
-            {/* Header com botão voltar */}
-            <div className="flex items-center mb-8">
-              <button
-                onClick={goBack}
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span>Voltar</span>
-              </button>
-            </div>
+  // Tela de seleção de dia (ENEM)
+  if (currentScreen === 'year-day-selection' && selectedExamData && selectedYear) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center mb-8">
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span>Voltar</span>
+            </button>
+          </div>
 
-            <div className="text-center mb-12">
-              <div className="text-4xl mb-4">{selectedExamData.icon}</div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {selectedExamData.name} {selectedYear}
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Questões da prova de {selectedYear}
+          <div className="text-center mb-12">
+            <div className="text-4xl mb-4">{selectedExamData.icon}</div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {selectedExamData.name} {selectedYear}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              Escolha o dia da prova
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto grid md:grid-cols-2 gap-6">
+            <button
+              onClick={() => selectDay(1)}
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">📅</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Dia 1
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Linguagens e Ciências Humanas
+                </p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => selectDay(2)}
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">📅</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Dia 2
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Matemática e Ciências da Natureza
+                </p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Tela de seleção de fase (FUVEST)
+  if (currentScreen === 'year-phase-selection' && selectedExamData && selectedYear) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center mb-8">
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span>Voltar</span>
+            </button>
+          </div>
+
+          <div className="text-center mb-12">
+            <div className="text-4xl mb-4">{selectedExamData.icon}</div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {selectedExamData.name} {selectedYear}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              Escolha a fase da prova
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto grid md:grid-cols-3 gap-6">
+            <button
+              onClick={() => selectPhase(1)}
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">1️⃣</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Fase 1
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Conhecimentos Gerais
+                </p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => selectPhase(2)}
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">2️⃣</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Fase 2
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Questões Dissertativas
+                </p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => selectPhase(3)}
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">3️⃣</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Fase 3
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Provas de Habilidades Específicas
+                </p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Tela de Quiz (Prova por Ano - ENEM 2009 Dia 1)
+  if (currentScreen === 'quiz-mode' && selectedExamData && selectedYear === 2009 && selectedDay === 1) {
+    const currentQuestion = ENEM_2009_DIA1_QUESTIONS[currentQuestionIndex];
+    const isLastQuestion = currentQuestionIndex >= ENEM_2009_DIA1_QUESTIONS.length - 1;
+    const totalAnswered = Object.keys(quizAnswers).length;
+
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-8">
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span>Voltar</span>
+            </button>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Questão {currentQuestionIndex + 1} de {ENEM_2009_DIA1_QUESTIONS.length} | Respondidas: {totalAnswered}
+            </div>
+          </div>
+
+          <div className="text-center mb-12">
+            <div className="text-4xl mb-4">{selectedExamData.icon}</div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {selectedExamData.name} {selectedYear} - Dia {selectedDay}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              Ciências da Natureza
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <QuizQuestionCard 
+              question={currentQuestion}
+              onAnswer={(answer) => {
+                setQuizAnswers(prev => ({ ...prev, [currentQuestion.id]: answer }));
+              }}
+              selectedAnswer={quizAnswers[currentQuestion.id] || null}
+            />
+            
+            {/* Botões de navegação */}
+            <div className="mt-6 flex justify-between">
+              <button
+                onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
+                disabled={currentQuestionIndex === 0}
+                className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  currentQuestionIndex === 0
+                    ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-500 hover:bg-gray-600 text-white'
+                }`}
+              >
+                Anterior
+              </button>
+              
+              {!isLastQuestion ? (
+                <button
+                  onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
+                  className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all duration-200"
+                >
+                  Próxima
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCurrentScreen('quiz-results')}
+                  className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-medium transition-all duration-200"
+                >
+                  Finalizar Prova
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Tela de Resultados (Gabarito Final)
+  if (currentScreen === 'quiz-results' && selectedExamData && selectedYear === 2009 && selectedDay === 1) {
+    const correctCount = ENEM_2009_DIA1_QUESTIONS.filter(q => quizAnswers[q.id] === q.correct).length;
+    const totalQuestions = ENEM_2009_DIA1_QUESTIONS.length;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center mb-8">
+            <button onClick={goBack} className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span>Refazer Prova</span>
+            </button>
+          </div>
+
+          <div className="text-center mb-12">
+            <div className="text-4xl mb-4">{selectedExamData.icon}</div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              Resultado - {selectedExamData.name} {selectedYear} Dia {selectedDay}
+            </h1>
+            <div className="mt-6 inline-block bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                {correctCount}/{totalQuestions}
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Você acertou {percentage}% das questões
               </p>
             </div>
+          </div>
 
-            {/* Grid de questões */}
-            <div className="max-w-6xl mx-auto space-y-6">
-              {QUESTIONS_2024.map((question) => (
-                <div
-                  key={question.id}
-                  className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300"
-                >
-                  {/* Cabeçalho da questão */}
+          {/* Gabarito completo */}
+          <div className="max-w-4xl mx-auto space-y-8">
+            {ENEM_2009_DIA1_QUESTIONS.map((question) => {
+              const userAnswer = quizAnswers[question.id];
+              const isCorrect = userAnswer === question.correct;
+
+              return (
+                <div key={question.id} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+                  {/* Cabeçalho */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
-                        <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                          {question.id}
-                        </span>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                        <span className="text-lg font-bold text-white">{question.id}</span>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                          {question.number}
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {question.subject}
-                        </p>
-                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        Questão {question.id}
+                      </h3>
                     </div>
-                    <div className="px-3 py-1 bg-green-100 dark:bg-green-900 rounded-full">
-                      <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                        Resposta: {question.correct}
-                      </span>
+                    <div className={`px-4 py-2 rounded-full ${
+                      isCorrect 
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                    }`}>
+                      {isCorrect ? '✓ Correta' : '✗ Errada'}
                     </div>
                   </div>
 
-                  {/* Texto da questão */}
+                  {/* Pergunta com imagem posicionada */}
                   <div className="mb-6">
-                    <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
-                      {question.text}
-                    </p>
-                    {question.question && (
-                      <p className="text-gray-800 dark:text-gray-200 leading-relaxed mt-4 font-medium">
-                        {question.question}
+                    {renderQuestionText(question)}
+                  </div>
+
+                  {/* Alternativas */}
+                  <div className="space-y-3 mb-6">
+                    {question.alternatives.map((alt, idx) => {
+                      const letter = String.fromCharCode(65 + idx);
+                      const isUserAnswer = userAnswer === letter;
+                      const isCorrectAnswer = letter === question.correct;
+
+                      return (
+                        <div
+                          key={idx}
+                          className={`p-4 rounded-xl border-2 ${
+                            isCorrectAnswer
+                              ? 'bg-green-50 dark:bg-green-900/20 border-green-500'
+                              : isUserAnswer
+                              ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
+                              : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                              isCorrectAnswer
+                                ? 'bg-green-500 text-white'
+                                : isUserAnswer
+                                ? 'bg-red-500 text-white'
+                                : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
+                            }`}>
+                              {isCorrectAnswer ? <Check className="w-4 h-4" /> : isUserAnswer ? <X className="w-4 h-4" /> : letter}
+                            </div>
+                            <span className={`flex-1 ${
+                              isCorrectAnswer
+                                ? 'text-green-800 dark:text-green-200 font-medium'
+                                : isUserAnswer
+                                ? 'text-red-800 dark:text-red-200'
+                                : 'text-gray-700 dark:text-gray-300'
+                            }`}>
+                              {alt.replace(/^[A-E]\)\s*/, '')}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Gabarito */}
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800 mb-4">
+                    <h4 className="font-bold text-green-800 dark:text-green-200 mb-2">
+                      ✅ Gabarito: Letra {question.correct}
+                    </h4>
+                    {userAnswer && (
+                      <p className="text-green-700 dark:text-green-300 text-sm">
+                        Sua resposta: Letra {userAnswer}
                       </p>
                     )}
                   </div>
 
-                  {/* Alternativas */}
-                  <div className="space-y-3">
-                    {question.alternatives.map((alternative, index) => (
-                      <div
-                        key={index}
-                        className={`p-4 rounded-xl border transition-all duration-200 ${
-                          alternative.startsWith(question.correct)
-                            ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-                            : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
-                        }`}
-                      >
-                        <p className={`text-sm ${
-                          alternative.startsWith(question.correct)
-                            ? 'text-green-800 dark:text-green-200 font-medium'
-                            : 'text-gray-700 dark:text-gray-300'
-                        }`}>
-                          {alternative}
-                        </p>
-                      </div>
-                    ))}
+                  {/* Resolução */}
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                    <h4 className="font-bold text-blue-800 dark:text-blue-200 mb-2">Resolução:</h4>
+                    <p className="text-blue-700 dark:text-blue-300 text-sm leading-relaxed">
+                      {question.explanation}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Footer */}
-            <div className="text-center mt-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">
-                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                  Total: {QUESTIONS_2024.length} questões
-                </span>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
-      );
-    } else {
-      // Placeholder para outros anos
-      return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4 py-8">
-            {/* Header com botão voltar */}
-            <div className="flex items-center mb-8">
-              <button
-                onClick={goBack}
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span>Voltar</span>
-              </button>
-            </div>
-
-            <div className="text-center mb-12">
-              <div className="text-4xl mb-4">{selectedExamData.icon}</div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {selectedExamData.name} {selectedYear}
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Questões da prova de {selectedYear}
-              </p>
-            </div>
-
-            {/* Placeholder */}
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 text-center">
-                <div className="text-6xl mb-6">📚</div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                  Questões em Desenvolvimento
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 text-lg">
-                  As questões do {selectedExamData.name} {selectedYear} estão sendo preparadas.
-                </p>
-                <p className="text-gray-500 dark:text-gray-500 text-sm mt-4">
-                  Em breve você poderá praticar com a prova completa!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   }
 
   return null;
